@@ -1,0 +1,26 @@
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Go
+      uses: actions/setup-go@v4
+
+    - name: Format
+      run: go fmt ./...
+    - name: Build Database Queries
+      run: sqlc generate -f internal/database/sqlc.yml
+    - name: Build Swagger Docs
+      run: swag init -d cmd/api,internal/handler
+
+    - name: Commit
+      uses: EndBug/add-and-commit@v9
+      with:
+        message: 'chore: format and build'
