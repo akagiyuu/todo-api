@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  format:
+  format-and-build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
