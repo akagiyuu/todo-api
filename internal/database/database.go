@@ -2,7 +2,7 @@ package database
 
 import (
 	"database/sql"
-	"github.com/akagiyuu/todo-api/internal/config"
+	"github.com/akagiyuu/todo-backend/internal/config"
 	"log"
 
 	"github.com/caarlos0/env/v11"

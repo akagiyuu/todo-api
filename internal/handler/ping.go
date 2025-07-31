@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/akagiyuu/todo-api/internal/util"
+	"github.com/akagiyuu/todo-backend/internal/util"
 )
 
 type PingResponse struct {

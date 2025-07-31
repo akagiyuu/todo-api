@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/akagiyuu/todo-api/internal/server"
+	"github.com/akagiyuu/todo-backend/internal/server"
 )
 
 func gracefulShutdown(apiServer *http.Server, done chan bool) {

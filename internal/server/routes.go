@@ -1,11 +1,11 @@
 package server
 
 import (
-	"github.com/akagiyuu/todo-api/internal/handler"
-	"github.com/akagiyuu/todo-api/internal/middleware"
+	"github.com/akagiyuu/todo-backend/internal/handler"
+	"github.com/akagiyuu/todo-backend/internal/middleware"
 	"net/http"
 
-	_ "github.com/akagiyuu/todo-api/docs"
+	_ "github.com/akagiyuu/todo-backend/docs"
 	"github.com/go-pkgz/routegroup"
 
 	httpSwagger "github.com/swaggo/http-swagger"
