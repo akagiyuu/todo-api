@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  format-and-build:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -16,8 +16,6 @@ jobs:
     - name: Setup Go
       uses: actions/setup-go@v4
 
-    - name: Format
-      run: go fmt ./...
     - name: Build Database Queries
       run: |
         go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
@@ -26,6 +24,8 @@ jobs:
       run: |
         go install github.com/swaggo/swag/cmd/swag@latest
         swag init -d cmd/api,internal/handler
+    - name: Format
+      run: go fmt ./...
 
     - name: Commit
       uses: EndBug/add-and-commit@v9
