@@ -14,7 +14,9 @@ jobs:
         repository: ${{ github.event.pull_request.head.repo.full_name }}
         ref: ${{ github.event.pull_request.head.ref }}
     - name: Setup Go
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
+      with:
+        cache: 'auto'
 
     - name: Build Database Queries
       run: |
