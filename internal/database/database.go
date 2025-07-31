@@ -2,8 +2,8 @@ package database
 
 import (
 	"database/sql"
-	"log"
 	"github.com/akagiyuu/todo-api/internal/config"
+	"log"
 
 	"github.com/caarlos0/env/v11"
 	_ "github.com/jackc/pgx/v5/stdlib"

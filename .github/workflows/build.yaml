@@ -3,18 +3,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  format-and-build:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.ref }}
     - name: Setup Go
       uses: actions/setup-go@v4
 
-    - name: Format
-      run: go fmt ./...
     - name: Build Database Queries
       run: |
         go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
@@ -23,6 +24,8 @@ jobs:
       run: |
         go install github.com/swaggo/swag/cmd/swag@latest
         swag init -d cmd/api,internal/handler
+    - name: Format
+      run: go fmt ./...
 
     - name: Commit
       uses: EndBug/add-and-commit@v9
