@@ -9,8 +9,8 @@ import (
 	"github.com/caarlos0/env/v11"
 	_ "github.com/joho/godotenv/autoload"
 
-	"github.com/akagiyuu/todo-api/internal/config"
-	"github.com/akagiyuu/todo-api/internal/database"
+	"github.com/akagiyuu/todo-backend/internal/config"
+	"github.com/akagiyuu/todo-backend/internal/database"
 )
 
 type Server struct {
