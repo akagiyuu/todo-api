@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"net/http"
 	"github.com/akagiyuu/todo-api/internal/config"
+	"net/http"
 
 	"github.com/caarlos0/env/v11"
 )

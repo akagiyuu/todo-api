@@ -4,10 +4,5 @@
 
 package database
 
-type A struct {
-	A string
-}
-
-type B struct {
-	B string
+type Test struct {
 }
