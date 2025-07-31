@@ -16,7 +16,7 @@ jobs:
     - name: Setup Go
       uses: actions/setup-go@v5
       with:
-        cache: 'auto'
+        cache: true
 
     - name: Build Database Queries
       run: |
