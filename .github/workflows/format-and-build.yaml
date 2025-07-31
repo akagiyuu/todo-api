@@ -1,9 +1,9 @@
 on:
   pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  format:
+  format-and-build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -16,9 +16,13 @@ jobs:
     - name: Format
       run: go fmt ./...
     - name: Build Database Queries
-      run: sqlc generate -f internal/database/sqlc.yml
+      run: |
+        go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+        sqlc generate -f internal/database/sqlc.yml
     - name: Build Swagger Docs
-      run: swag init -d cmd/api,internal/handler
+      run: |
+        go install github.com/swaggo/swag/cmd/swag@latest
+        swag init -d cmd/api,internal/handler
 
     - name: Commit
       uses: EndBug/add-and-commit@v9
