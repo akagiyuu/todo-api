@@ -30,7 +30,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: self-hosted
-    needs: [build-frontend, build-backend]
+    needs: [build-backend]
     permissions:
       contents: read
       packages: write
