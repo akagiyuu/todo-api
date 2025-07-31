@@ -36,7 +36,9 @@ jobs:
       packages: write
     env:
       REGISTRY: ghcr.io/${{ github.repository }}
-
+      DATABASE_DB: ${{ secrets.DATABASE_DB }}
+      DATABASE_USER: ${{ secrets.DATABASE_USER }}
+      DATABASE_PASS: ${{ secrets.DATABASE_PASS }}
     steps:
       - uses: actions/checkout@v4
 
