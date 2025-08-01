@@ -1,6 +1,10 @@
 pre-push:
   jobs:
-    - name: Build
-      run: ./script/build.sh
+    - name: Build Sqlc
+      run: sqlc generate -f internal/database/sqlc.yml
+
+    - name: Build Docs  
+      run: swag init -d cmd/api,internal/handler
+
     - name: Format
       run: go fmt ./...
