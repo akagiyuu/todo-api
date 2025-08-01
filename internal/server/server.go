@@ -1,12 +1,12 @@
 package server
 
 import (
-	"database/sql"
 	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/caarlos0/env/v11"
+	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/joho/godotenv/autoload"
 
 	"github.com/akagiyuu/todo-backend/internal/config"
@@ -14,7 +14,7 @@ import (
 )
 
 type Server struct {
-	database *sql.DB
+	database *pgxpool.Pool
 }
 
 func NewServer() *http.Server {
