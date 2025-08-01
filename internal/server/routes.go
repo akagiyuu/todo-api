@@ -14,6 +14,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r := gin.Default()
 
 	r.Use(s.CorsMiddleware())
+	r.Use(s.ErrorMiddleware())
 
 	r.GET("/", s.PingHandler)
 	r.POST("/auth/register", s.RegisterHandler)
