@@ -1,19 +1,20 @@
 package database
 
 import (
-	"database/sql"
-	"github.com/akagiyuu/todo-backend/internal/config"
+	"context"
 	"log"
 
+	"github.com/akagiyuu/todo-backend/internal/config"
+	"github.com/jackc/pgx/v5/pgxpool"
+
 	"github.com/caarlos0/env/v11"
-	_ "github.com/jackc/pgx/v5/stdlib"
 	_ "github.com/joho/godotenv/autoload"
 )
 
-func Init() *sql.DB {
+func Init() *pgxpool.Pool {
 	cfg, _ := env.ParseAs[config.DatabaseConfig]()
 
-	db, err := sql.Open("pgx", cfg.GetConnectionString())
+	db, err := pgxpool.New(context.Background(), cfg.GetConnectionString())
 	if err != nil {
 		log.Fatal(err)
 	}

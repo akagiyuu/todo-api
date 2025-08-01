@@ -4,5 +4,12 @@
 
 package database
 
-type Test struct {
+import (
+	"github.com/jackc/pgx/v5/pgtype"
+)
+
+type Account struct {
+	ID       pgtype.UUID
+	Email    string
+	Password string
 }

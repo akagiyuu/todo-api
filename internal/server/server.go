@@ -1,12 +1,12 @@
 package server
 
 import (
-	"database/sql"
 	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/caarlos0/env/v11"
+	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/joho/godotenv/autoload"
 
 	"github.com/akagiyuu/todo-backend/internal/config"
@@ -14,14 +14,14 @@ import (
 )
 
 type Server struct {
-	database *sql.DB
+	db *pgxpool.Pool
 }
 
 func NewServer() *http.Server {
 	cfg, _ := env.ParseAs[config.ServerConfig]()
 
 	NewServer := &Server{
-		database: database.Init(),
+		db: database.Init(),
 	}
 
 	server := &http.Server{
