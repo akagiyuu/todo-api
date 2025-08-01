@@ -1,21 +1,15 @@
 package handler
 
-import (
-	"net/http"
-
-	"github.com/akagiyuu/todo-backend/internal/util"
-)
+import "context"
 
 type PingResponse struct {
 	Message string `json:"message"`
 }
 
-// Ping handler
-// @Description test if server is ok
-// @Produce  json
-// @Router / [get]
-func Ping(w http.ResponseWriter, r *http.Request) {
-	util.WriteResponse(PingResponse{
-		Message: "pong",
-	}, w)
+func Ping(ctx context.Context, _ *struct{}) (*struct { Body: PingResponse }, error) {
+	response := PingResponse{
+		Message: "pong"
+	}
+
+	return response, nil
 }
