@@ -1,4 +1,17 @@
 basePath: /
+definitions:
+  database.CreateAccountParams:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  handler.ApiError:
+    properties:
+      message:
+        type: string
+    type: object
 info:
   contact: {}
   title: Todo API
@@ -6,8 +19,34 @@ info:
 paths:
   /:
     get:
-      description: check if server is running
+      description: Check if server is running
       produces:
       - application/json
       responses: {}
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user account with email and password.
+      parameters:
+      - description: Registration payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/database.CreateAccountParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Created account ID
+          schema:
+            type: string
+        "400":
+          description: Bad request, validation or creation failure
+          schema:
+            $ref: '#/definitions/handler.ApiError'
+      summary: Create a new account
+      tags:
+      - auth
 swagger: "2.0"

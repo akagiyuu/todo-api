@@ -17,11 +17,72 @@ const docTemplate = `{
     "paths": {
         "/": {
             "get": {
-                "description": "check if server is running",
+                "description": "Check if server is running",
                 "produces": [
                     "application/json"
                 ],
                 "responses": {}
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "description": "Creates a new user account with email and password.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Create a new account",
+                "parameters": [
+                    {
+                        "description": "Registration payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/database.CreateAccountParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Created account ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request, validation or creation failure",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ApiError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "database.CreateAccountParams": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ApiError": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
             }
         }
     }
