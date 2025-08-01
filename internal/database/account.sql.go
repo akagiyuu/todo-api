@@ -28,3 +28,21 @@ func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (p
 	err := row.Scan(&id)
 	return id, err
 }
+
+const getAccountByEmail = `-- name: GetAccountByEmail :one
+SELECT id, password
+FROM accounts
+WHERE email = $1
+`
+
+type GetAccountByEmailRow struct {
+	ID       pgtype.UUID
+	Password string
+}
+
+func (q *Queries) GetAccountByEmail(ctx context.Context, email string) (GetAccountByEmailRow, error) {
+	row := q.db.QueryRow(ctx, getAccountByEmail, email)
+	var i GetAccountByEmailRow
+	err := row.Scan(&i.ID, &i.Password)
+	return i, err
+}
