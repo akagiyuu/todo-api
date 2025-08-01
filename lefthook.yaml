@@ -1,0 +1,6 @@
+pre-push:
+  jobs:
+    - name: Build
+      run: ./script/build.sh
+    - name: Format
+      run: go fmt ./...
