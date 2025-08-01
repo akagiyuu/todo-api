@@ -9,6 +9,9 @@ definitions:
     type: object
   server.ApiError:
     properties:
+      details:
+        additionalProperties: {}
+        type: object
       message:
         type: string
     type: object

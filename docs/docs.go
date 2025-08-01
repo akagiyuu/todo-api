@@ -77,6 +77,10 @@ const docTemplate = `{
         "server.ApiError": {
             "type": "object",
             "properties": {
+                "details": {
+                    "type": "object",
+                    "additionalProperties": {}
+                },
                 "message": {
                     "type": "string"
                 }

@@ -30,9 +30,9 @@ func (s *Server) RegisterHandler(c *gin.Context) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.Error(&ApiError{
+			Inner:   err,
 			Code:    http.StatusBadRequest,
 			Message: "Invalid register data",
-			Inner:   err,
 		})
 		return
 	}
@@ -42,9 +42,9 @@ func (s *Server) RegisterHandler(c *gin.Context) {
 	id, err := queries.CreateAccount(ctx, request)
 	if err != nil {
 		c.Error(&ApiError{
+			Inner:   err,
 			Code:    http.StatusBadRequest,
 			Message: "Account with given email already existed",
-			Inner:   err,
 		})
 		return
 	}
@@ -52,9 +52,9 @@ func (s *Server) RegisterHandler(c *gin.Context) {
 	tokenString, err := s.jwt.NewToken(id.String())
 	if err != nil {
 		c.Error(&ApiError{
+			Inner:   err,
 			Code:    http.StatusInternalServerError,
 			Message: "Failed to generate token",
-			Inner:   err,
 		})
 		return
 	}
