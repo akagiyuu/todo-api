@@ -14,14 +14,14 @@ import (
 )
 
 type Server struct {
-	database *pgxpool.Pool
+	db *pgxpool.Pool
 }
 
 func NewServer() *http.Server {
 	cfg, _ := env.ParseAs[config.ServerConfig]()
 
 	NewServer := &Server{
-		database: database.Init(),
+		db: database.Init(),
 	}
 
 	server := &http.Server{
