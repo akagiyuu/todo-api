@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/akagiyuu/todo-backend/internal/config"
@@ -20,15 +21,29 @@ func NewJwtService() (s JwtService, err error) {
 }
 
 func (s *JwtService) NewToken(subject string) (string, error) {
-	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": subject,
 		"exp": time.Now().Add(time.Duration(s.cfg.ExpiredIn) * time.Hour).Unix(),
 		"iat": time.Now().Unix(),
 	})
 
-	token, err := claims.SignedString(s.cfg.Secret)
+	tokenString, err := token.SignedString(s.cfg.Secret)
 	if err != nil {
 		return "", err
+	}
+
+	return tokenString, nil
+}
+
+func (s *JwtService) ParseToken(tokenString string) (*jwt.Token, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
+		return s.cfg.Secret, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if !token.Valid {
+		return nil, fmt.Errorf("invalid token")
 	}
 
 	return token, nil
