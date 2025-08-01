@@ -11,7 +11,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
-func Init() *pgxpool.Pool {
+func NewPool() *pgxpool.Pool {
 	cfg, _ := env.ParseAs[config.DatabaseConfig]()
 
 	db, err := pgxpool.New(context.Background(), cfg.GetConnectionString())

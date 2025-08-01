@@ -23,7 +23,7 @@ func NewServer() *http.Server {
 	cfg, _ := env.ParseAs[config.ServerConfig]()
 
 	NewServer := &Server{
-		db:  database.Init(),
+		db:  database.NewPool(),
 		jwt: service.NewJwtService(),
 	}
 
