@@ -37,9 +37,6 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 	done <- true
 }
 
-// @title           Todo API
-// @version         1.0
-// @BasePath        /
 func main() {
 
 	server := server.NewServer()
