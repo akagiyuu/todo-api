@@ -9,8 +9,6 @@ definitions:
     type: object
   server.ApiError:
     properties:
-      code:
-        type: integer
       message:
         type: string
     type: object

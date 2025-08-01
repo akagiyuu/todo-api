@@ -7,7 +7,7 @@ import (
 )
 
 type ApiError struct {
-	Code    int    `json:"code"`
+	Code    int    `json:"-"`
 	Message string `json:"message"`
 	Inner   error  `json:"-"`
 }
