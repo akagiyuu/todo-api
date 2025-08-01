@@ -18,6 +18,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	r.GET("/", s.PingHandler)
 	r.POST("/auth/register", s.RegisterHandler)
+	r.POST("/auth/login", s.LoginHandler)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 

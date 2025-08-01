@@ -24,9 +24,40 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/auth/login": {
+            "post": {
+                "description": "Login with email and password",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "Registration payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/server.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Created account ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/register": {
             "post": {
-                "description": "Creates a new user account with email and password.",
+                "description": "Creates a new user account with email and password",
                 "consumes": [
                     "application/json"
                 ],
@@ -51,12 +82,6 @@ const docTemplate = `{
                         "schema": {
                             "type": "string"
                         }
-                    },
-                    "400": {
-                        "description": "Bad request, validation or creation failure",
-                        "schema": {
-                            "$ref": "#/definitions/server.ApiError"
-                        }
                     }
                 }
             }
@@ -74,14 +99,13 @@ const docTemplate = `{
                 }
             }
         },
-        "server.ApiError": {
+        "server.LoginRequest": {
             "type": "object",
             "properties": {
-                "details": {
-                    "type": "object",
-                    "additionalProperties": {}
+                "email": {
+                    "type": "string"
                 },
-                "message": {
+                "password": {
                     "type": "string"
                 }
             }

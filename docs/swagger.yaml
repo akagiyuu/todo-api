@@ -7,12 +7,11 @@ definitions:
       password:
         type: string
     type: object
-  server.ApiError:
+  server.LoginRequest:
     properties:
-      details:
-        additionalProperties: {}
-        type: object
-      message:
+      email:
+        type: string
+      password:
         type: string
     type: object
 info:
@@ -26,11 +25,31 @@ paths:
       produces:
       - application/json
       responses: {}
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login with email and password
+      parameters:
+      - description: Registration payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/server.LoginRequest'
+      responses:
+        "200":
+          description: Created account ID
+          schema:
+            type: string
+      summary: Login
+      tags:
+      - auth
   /auth/register:
     post:
       consumes:
       - application/json
-      description: Creates a new user account with email and password.
+      description: Creates a new user account with email and password
       parameters:
       - description: Registration payload
         in: body
@@ -43,10 +62,6 @@ paths:
           description: Created account ID
           schema:
             type: string
-        "400":
-          description: Bad request, validation or creation failure
-          schema:
-            $ref: '#/definitions/server.ApiError'
       summary: Create a new account
       tags:
       - auth
