@@ -29,8 +29,10 @@ func (s *Server) RegisterHandler(c *gin.Context) {
 	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, ApiError{
+		c.Error(&ApiError{
+			Code:    http.StatusBadRequest,
 			Message: "Invalid register data",
+			Inner:   err,
 		})
 		return
 	}
@@ -39,8 +41,10 @@ func (s *Server) RegisterHandler(c *gin.Context) {
 	queries := database.New(s.db)
 	id, err := queries.CreateAccount(ctx, request)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, ApiError{
-			Message: "Failed to create account",
+		c.Error(&ApiError{
+			Code:    http.StatusBadRequest,
+			Message: "Account with given email already existed",
+			Inner:   err,
 		})
 		return
 	}
