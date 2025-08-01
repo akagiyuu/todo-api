@@ -8,7 +8,7 @@ type ApiError struct {
 }
 
 func WriteError(e *ApiError, w http.ResponseWriter) {
-	http.Error(w, e.Message, http.StatusBadRequest)
+	 	http.Error(w, e.Message, http.StatusBadRequest)
 
 	if e.Detail != nil {
 		WriteResponse(e.Detail, w)
