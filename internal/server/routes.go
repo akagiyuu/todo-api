@@ -1,24 +1,25 @@
 package server
 
 import (
-	"github.com/akagiyuu/todo-backend/internal/handler"
-	"github.com/akagiyuu/todo-backend/internal/middleware"
 	"net/http"
 
-	_ "github.com/akagiyuu/todo-backend/docs"
-	"github.com/go-pkgz/routegroup"
+	"github.com/akagiyuu/todo-backend/internal/handler"
+	"github.com/akagiyuu/todo-backend/internal/middleware"
+	"github.com/gin-gonic/gin"
 
-	httpSwagger "github.com/swaggo/http-swagger"
+	_ "github.com/akagiyuu/todo-backend/docs"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
-	router := routegroup.New(http.NewServeMux())
+	r := gin.Default()
 
-	router.Use(middleware.Cors)
+	r.Use(middleware.Cors())
 
-	router.HandleFunc("GET /", handler.Ping)
+	r.GET("/", handler.Ping)
 
-	router.Handle("/swagger/", httpSwagger.WrapHandler)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	return router
+	return r
 }

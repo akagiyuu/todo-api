@@ -3,19 +3,18 @@ package handler
 import (
 	"net/http"
 
-	"github.com/akagiyuu/todo-backend/internal/util"
+	"github.com/gin-gonic/gin"
 )
 
 type PingResponse struct {
 	Message string `json:"message"`
 }
 
-// Ping handler
-// @Description test if server is ok
-// @Produce  json
+// @Description check if server is running
+// @Produce json
 // @Router / [get]
-func Ping(w http.ResponseWriter, r *http.Request) {
-	util.WriteResponse(PingResponse{
+func Ping(c *gin.Context) {
+	c.JSON(http.StatusOK, PingResponse{
 		Message: "pong",
-	}, w)
+	})
 }
