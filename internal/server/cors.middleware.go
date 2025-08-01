@@ -1,4 +1,4 @@
-package middleware
+package server
 
 import (
 	"github.com/akagiyuu/todo-backend/internal/config"
@@ -8,7 +8,7 @@ import (
 	"github.com/caarlos0/env/v11"
 )
 
-func Cors() gin.HandlerFunc {
+func (s *Server) CorsMiddleware() gin.HandlerFunc {
 	cfg, _ := env.ParseAs[config.CorsConfig]()
 
 	return cors.New(cors.Config{

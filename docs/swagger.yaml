@@ -7,7 +7,7 @@ definitions:
       password:
         type: string
     type: object
-  handler.ApiError:
+  server.ApiError:
     properties:
       message:
         type: string
@@ -45,7 +45,7 @@ paths:
         "400":
           description: Bad request, validation or creation failure
           schema:
-            $ref: '#/definitions/handler.ApiError'
+            $ref: '#/definitions/server.ApiError'
       summary: Create a new account
       tags:
       - auth

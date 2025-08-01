@@ -1,4 +1,4 @@
-package handler
+package server
 
 import (
 	"net/http"
@@ -13,7 +13,7 @@ type PingResponse struct {
 // @Description  Check if server is running
 // @Produce      json
 // @Router       / [get]
-func Ping(c *gin.Context) {
+func (s *Server) PingHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, PingResponse{
 		Message: "pong",
 	})

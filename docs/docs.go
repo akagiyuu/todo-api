@@ -58,7 +58,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad request, validation or creation failure",
                         "schema": {
-                            "$ref": "#/definitions/handler.ApiError"
+                            "$ref": "#/definitions/server.ApiError"
                         }
                     }
                 }
@@ -77,7 +77,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.ApiError": {
+        "server.ApiError": {
             "type": "object",
             "properties": {
                 "message": {
