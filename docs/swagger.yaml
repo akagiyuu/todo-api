@@ -9,6 +9,8 @@ definitions:
     type: object
   server.ApiError:
     properties:
+      code:
+        type: integer
       message:
         type: string
     type: object
@@ -35,8 +37,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/database.CreateAccountParams'
-      produces:
-      - application/json
       responses:
         "200":
           description: Created account ID

@@ -22,9 +22,6 @@
                 "consumes": [
                     "application/json"
                 ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "auth"
                 ],
@@ -72,6 +69,9 @@
         "server.ApiError": {
             "type": "object",
             "properties": {
+                "code": {
+                    "type": "integer"
+                },
                 "message": {
                     "type": "string"
                 }

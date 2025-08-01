@@ -30,9 +30,6 @@ const docTemplate = `{
                 "consumes": [
                     "application/json"
                 ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "auth"
                 ],
@@ -80,6 +77,9 @@ const docTemplate = `{
         "server.ApiError": {
             "type": "object",
             "properties": {
+                "code": {
+                    "type": "integer"
+                },
                 "message": {
                     "type": "string"
                 }

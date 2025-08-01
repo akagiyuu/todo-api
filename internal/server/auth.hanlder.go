@@ -13,9 +13,8 @@ import (
 // @Description  Creates a new user account with email and password.
 // @Tags         auth
 // @Accept       json
-// @Produce      json
 // @Param        payload  body       database.CreateAccountParams  true  "Registration payload"
-// @Success      200      {string}   pgtype.UUID                         "Created account ID"
+// @Success      200      {string}   string                              "Created account ID"
 // @Failure      400      {object}   ApiError                            "Bad request, validation or creation failure"
 // @Router       /auth/register [post]
 func (s *Server) RegisterHandler(c *gin.Context) {
@@ -46,5 +45,15 @@ func (s *Server) RegisterHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, id)
+	tokenString, err := s.jwt.NewToken(id.String())
+	if err != nil {
+		c.Error(&ApiError{
+			Code:    http.StatusInternalServerError,
+			Message: "Failed to generate token",
+			Inner:   err,
+		})
+		return
+	}
+
+	c.String(http.StatusOK, tokenString)
 }
