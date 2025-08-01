@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/": {
             "get": {
-                "description": "test if server is ok",
+                "description": "check if server is running",
                 "produces": [
                     "application/json"
                 ],

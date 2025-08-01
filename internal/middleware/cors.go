@@ -2,25 +2,19 @@ package middleware
 
 import (
 	"github.com/akagiyuu/todo-backend/internal/config"
-	"net/http"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 
 	"github.com/caarlos0/env/v11"
 )
 
-func Cors(next http.Handler) http.Handler {
+func Cors() gin.HandlerFunc {
 	cfg, _ := env.ParseAs[config.CorsConfig]()
 
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", cfg.AllowOrigin)
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH")
-		w.Header().Set("Access-Control-Allow-Headers", "Accept, Authorization, Content-Type, X-CSRF-Token")
-		w.Header().Set("Access-Control-Allow-Credentials", "true")
-
-		if r.Method == http.MethodOptions {
-			w.WriteHeader(http.StatusNoContent)
-			return
-		}
-
-		next.ServeHTTP(w, r)
+	return cors.New(cors.Config{
+		AllowOrigins:     []string{cfg.AllowOrigin},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
+		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type"},
+		AllowCredentials: true,
 	})
 }
