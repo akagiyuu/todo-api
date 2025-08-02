@@ -38,7 +38,7 @@ func (r *AuthRoutes) RegisterHandler(c *gin.Context) {
 	}
 	request.Password = string(hashedPassword)
 
-	queries := database.New(r.Db)
+	queries := database.New(r.db)
 	id, err := queries.CreateAccount(ctx, request)
 	if err != nil {
 		c.Error(&middleware.ApiError{
@@ -49,7 +49,7 @@ func (r *AuthRoutes) RegisterHandler(c *gin.Context) {
 		return
 	}
 
-	tokenString, err := r.Jwt.NewToken(id.String())
+	tokenString, err := r.jwtService.NewToken(id.String())
 	if err != nil {
 		c.Error(&middleware.ApiError{
 			Inner:   err,

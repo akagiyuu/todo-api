@@ -1,17 +1,24 @@
 package auth
 
 import (
-	"github.com/akagiyuu/todo-backend/internal/service"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
+
+	"github.com/akagiyuu/todo-backend/internal/database"
+	"github.com/akagiyuu/todo-backend/internal/service/jwt"
 )
 
 type AuthRoutes struct {
-	Db  *pgxpool.Pool
-	Jwt *service.JwtService
+	db  *pgxpool.Pool
+	jwtService *jwt.JwtService
 }
 
-func (r AuthRoutes) RegisterRoutes(g *gin.Engine) {
+func RegisterRoutes(g *gin.Engine) {
+	r := AuthRoutes{
+		db:  database.NewPool(),
+		jwtService: jwt.New(),
+	}
+
 	g.POST("/auth/register", r.RegisterHandler)
 	g.POST("/auth/login", r.LoginHandler)
 }

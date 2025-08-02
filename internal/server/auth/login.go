@@ -38,7 +38,7 @@ func (r *AuthRoutes) LoginHandler(c *gin.Context) {
 		return
 	}
 
-	queries := database.New(r.Db)
+	queries := database.New(r.db)
 	account, err := queries.GetAccountByEmail(ctx, request.Email)
 	if err != nil {
 		c.Error(&middleware.ApiError{
@@ -56,7 +56,7 @@ func (r *AuthRoutes) LoginHandler(c *gin.Context) {
 		})
 	}
 
-	tokenString, err := r.Jwt.NewToken(account.ID.String())
+	tokenString, err := r.jwtService.NewToken(account.ID.String())
 	if err != nil {
 		c.Error(&middleware.ApiError{
 			Inner:   err,

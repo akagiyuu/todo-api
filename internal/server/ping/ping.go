@@ -8,7 +8,9 @@ import (
 
 type PingRoutes struct{}
 
-func (r PingRoutes) RegisterRoutes(g *gin.Engine) {
+func RegisterRoutes(g *gin.Engine) {
+	r := PingRoutes{}
+
 	g.GET("/", r.PingHandler)
 }
 

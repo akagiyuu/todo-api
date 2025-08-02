@@ -19,11 +19,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 	g.Use(middleware.Cors())
 	g.Use(middleware.ErrorHandler())
 
-	ping.PingRoutes{}.RegisterRoutes(g)
-	auth.AuthRoutes{
-		Db:  s.db,
-		Jwt: s.jwt,
-	}.RegisterRoutes(g)
+	ping.RegisterRoutes(g)
+	auth.RegisterRoutes(g)
 
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
