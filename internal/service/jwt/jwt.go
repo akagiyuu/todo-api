@@ -1,4 +1,4 @@
-package service
+package jwt
 
 import (
 	"fmt"
@@ -7,13 +7,14 @@ import (
 	"github.com/akagiyuu/todo-backend/internal/config"
 	"github.com/caarlos0/env/v11"
 	"github.com/golang-jwt/jwt/v5"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 type JwtService struct {
 	cfg config.JwtConfig
 }
 
-func NewJwtService() *JwtService {
+func New() *JwtService {
 	cfg, _ := env.ParseAs[config.JwtConfig]()
 
 	return &JwtService{cfg}

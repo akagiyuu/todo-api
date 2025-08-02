@@ -11,20 +11,17 @@ import (
 
 	"github.com/akagiyuu/todo-backend/internal/config"
 	"github.com/akagiyuu/todo-backend/internal/database"
-	"github.com/akagiyuu/todo-backend/internal/service"
 )
 
 type Server struct {
-	db  *pgxpool.Pool
-	jwt *service.JwtService
+	db *pgxpool.Pool
 }
 
 func NewServer() *http.Server {
 	cfg, _ := env.ParseAs[config.ServerConfig]()
 
 	NewServer := &Server{
-		db:  database.NewPool(),
-		jwt: service.NewJwtService(),
+		db: database.NewPool(),
 	}
 
 	server := &http.Server{
