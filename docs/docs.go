@@ -44,7 +44,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/server.LoginRequest"
+                            "$ref": "#/definitions/auth.LoginRequest"
                         }
                     }
                 ],
@@ -58,13 +58,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid login data or wrong credentials",
                         "schema": {
-                            "$ref": "#/definitions/server.ApiError"
+                            "$ref": "#/definitions/middleware.ApiError"
                         }
                     },
                     "500": {
                         "description": "Internal failure during token generation",
                         "schema": {
-                            "$ref": "#/definitions/server.ApiError"
+                            "$ref": "#/definitions/middleware.ApiError"
                         }
                     }
                 }
@@ -103,6 +103,18 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "auth.LoginRequest": {
+            "description": "Payload for /auth/login: user's email and password.",
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "database.CreateAccountParams": {
             "type": "object",
             "properties": {
@@ -114,7 +126,7 @@ const docTemplate = `{
                 }
             }
         },
-        "server.ApiError": {
+        "middleware.ApiError": {
             "description": "HTTP-level error response wrapper.",
             "type": "object",
             "properties": {
@@ -123,18 +135,6 @@ const docTemplate = `{
                     "additionalProperties": {}
                 },
                 "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "server.LoginRequest": {
-            "description": "Payload for /auth/login: user's email and password.",
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
                     "type": "string"
                 }
             }

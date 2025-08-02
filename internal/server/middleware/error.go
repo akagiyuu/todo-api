@@ -1,4 +1,4 @@
-package server
+package middleware
 
 import (
 	"net/http"
@@ -18,7 +18,7 @@ func (e *ApiError) Error() string {
 	return e.Message
 }
 
-func (s *Server) ErrorMiddleware() gin.HandlerFunc {
+func ErrorHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
 

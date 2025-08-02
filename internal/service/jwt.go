@@ -13,10 +13,10 @@ type JwtService struct {
 	cfg config.JwtConfig
 }
 
-func NewJwtService() JwtService {
+func NewJwtService() *JwtService {
 	cfg, _ := env.ParseAs[config.JwtConfig]()
 
-	return JwtService{cfg}
+	return &JwtService{cfg}
 }
 
 func (s *JwtService) NewToken(subject string) (string, error) {

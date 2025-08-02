@@ -16,7 +16,7 @@ import (
 
 type Server struct {
 	db  *pgxpool.Pool
-	jwt service.JwtService
+	jwt *service.JwtService
 }
 
 func NewServer() *http.Server {

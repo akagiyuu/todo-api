@@ -1,5 +1,13 @@
 basePath: /
 definitions:
+  auth.LoginRequest:
+    description: 'Payload for /auth/login: user''s email and password.'
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   database.CreateAccountParams:
     properties:
       email:
@@ -7,21 +15,13 @@ definitions:
       password:
         type: string
     type: object
-  server.ApiError:
+  middleware.ApiError:
     description: HTTP-level error response wrapper.
     properties:
       details:
         additionalProperties: {}
         type: object
       message:
-        type: string
-    type: object
-  server.LoginRequest:
-    description: 'Payload for /auth/login: user''s email and password.'
-    properties:
-      email:
-        type: string
-      password:
         type: string
     type: object
 info:
@@ -46,7 +46,7 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/server.LoginRequest'
+          $ref: '#/definitions/auth.LoginRequest'
       produces:
       - text/plain
       responses:
@@ -57,11 +57,11 @@ paths:
         "400":
           description: Invalid login data or wrong credentials
           schema:
-            $ref: '#/definitions/server.ApiError'
+            $ref: '#/definitions/middleware.ApiError'
         "500":
           description: Internal failure during token generation
           schema:
-            $ref: '#/definitions/server.ApiError'
+            $ref: '#/definitions/middleware.ApiError'
       summary: Login
       tags:
       - auth

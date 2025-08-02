@@ -36,7 +36,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/server.LoginRequest"
+                            "$ref": "#/definitions/auth.LoginRequest"
                         }
                     }
                 ],
@@ -50,13 +50,13 @@
                     "400": {
                         "description": "Invalid login data or wrong credentials",
                         "schema": {
-                            "$ref": "#/definitions/server.ApiError"
+                            "$ref": "#/definitions/middleware.ApiError"
                         }
                     },
                     "500": {
                         "description": "Internal failure during token generation",
                         "schema": {
-                            "$ref": "#/definitions/server.ApiError"
+                            "$ref": "#/definitions/middleware.ApiError"
                         }
                     }
                 }
@@ -95,6 +95,18 @@
         }
     },
     "definitions": {
+        "auth.LoginRequest": {
+            "description": "Payload for /auth/login: user's email and password.",
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "database.CreateAccountParams": {
             "type": "object",
             "properties": {
@@ -106,7 +118,7 @@
                 }
             }
         },
-        "server.ApiError": {
+        "middleware.ApiError": {
             "description": "HTTP-level error response wrapper.",
             "type": "object",
             "properties": {
@@ -115,18 +127,6 @@
                     "additionalProperties": {}
                 },
                 "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "server.LoginRequest": {
-            "description": "Payload for /auth/login: user's email and password.",
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
                     "type": "string"
                 }
             }
