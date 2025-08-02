@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Description HTTP-level error response wrapper.
 type ApiError struct {
 	Inner   error          `json:"-"`
 	Code    int            `json:"-"`

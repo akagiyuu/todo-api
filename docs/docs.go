@@ -26,9 +26,12 @@ const docTemplate = `{
         },
         "/auth/login": {
             "post": {
-                "description": "Login with email and password",
+                "description": "Log in using email and password. Returns a raw JWT token string.",
                 "consumes": [
                     "application/json"
+                ],
+                "produces": [
+                    "text/plain"
                 ],
                 "tags": [
                     "auth"
@@ -36,7 +39,7 @@ const docTemplate = `{
                 "summary": "Login",
                 "parameters": [
                     {
-                        "description": "Registration payload",
+                        "description": "Login credentials",
                         "name": "payload",
                         "in": "body",
                         "required": true,
@@ -47,9 +50,21 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Created account ID",
+                        "description": "JWT access token",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid login data or wrong credentials",
+                        "schema": {
+                            "$ref": "#/definitions/server.ApiError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal failure during token generation",
+                        "schema": {
+                            "$ref": "#/definitions/server.ApiError"
                         }
                     }
                 }
@@ -99,7 +114,21 @@ const docTemplate = `{
                 }
             }
         },
+        "server.ApiError": {
+            "description": "HTTP-level error response wrapper.",
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "object",
+                    "additionalProperties": {}
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "server.LoginRequest": {
+            "description": "Payload for /auth/login: user's email and password.",
             "type": "object",
             "properties": {
                 "email": {

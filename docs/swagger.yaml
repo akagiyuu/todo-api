@@ -7,7 +7,17 @@ definitions:
       password:
         type: string
     type: object
+  server.ApiError:
+    description: HTTP-level error response wrapper.
+    properties:
+      details:
+        additionalProperties: {}
+        type: object
+      message:
+        type: string
+    type: object
   server.LoginRequest:
+    description: 'Payload for /auth/login: user''s email and password.'
     properties:
       email:
         type: string
@@ -29,19 +39,29 @@ paths:
     post:
       consumes:
       - application/json
-      description: Login with email and password
+      description: Log in using email and password. Returns a raw JWT token string.
       parameters:
-      - description: Registration payload
+      - description: Login credentials
         in: body
         name: payload
         required: true
         schema:
           $ref: '#/definitions/server.LoginRequest'
+      produces:
+      - text/plain
       responses:
         "200":
-          description: Created account ID
+          description: JWT access token
           schema:
             type: string
+        "400":
+          description: Invalid login data or wrong credentials
+          schema:
+            $ref: '#/definitions/server.ApiError'
+        "500":
+          description: Internal failure during token generation
+          schema:
+            $ref: '#/definitions/server.ApiError'
       summary: Login
       tags:
       - auth

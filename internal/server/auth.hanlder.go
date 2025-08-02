@@ -61,17 +61,22 @@ func (s *Server) RegisterHandler(c *gin.Context) {
 	c.String(http.StatusOK, tokenString)
 }
 
+// @Description Payload for /auth/login: user's email and password.
 type LoginRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
+// LoginHandler godoc
 // @Summary      Login
-// @Description  Login with email and password
+// @Description  Log in using email and password. Returns a raw JWT token string.
 // @Tags         auth
 // @Accept       json
-// @Param        payload  body       LoginRequest  true
-// @Success      200      {string}   string
+// @Produce      plain
+// @Param        payload  body       LoginRequest  true  "Login credentials"
+// @Success      200      {string}   string        "JWT access token"
+// @Failure      400      {object}   ApiError      "Invalid login data or wrong credentials"
+// @Failure      500      {object}   ApiError      "Internal failure during token generation"
 // @Router       /auth/login [post]
 func (s *Server) LoginHandler(c *gin.Context) {
 	ctx := context.Background()
