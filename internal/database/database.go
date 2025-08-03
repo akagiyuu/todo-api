@@ -11,13 +11,19 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
-func Init() *pgxpool.Pool {
+var instance *pgxpool.Pool
+
+func NewPool() *pgxpool.Pool {
+	if instance != nil {
+		return instance
+	}
+
 	cfg, _ := env.ParseAs[config.DatabaseConfig]()
 
-	db, err := pgxpool.New(context.Background(), cfg.GetConnectionString())
+	instance, err := pgxpool.New(context.Background(), cfg.GetConnectionString())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return db
+	return instance
 }

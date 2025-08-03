@@ -1,4 +1,29 @@
 basePath: /
+definitions:
+  auth.LoginRequest:
+    description: 'Payload for /auth/login: user''s email and password.'
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  database.CreateAccountParams:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  middleware.ApiError:
+    description: HTTP-level error response wrapper.
+    properties:
+      details:
+        additionalProperties: {}
+        type: object
+      message:
+        type: string
+    type: object
 info:
   contact: {}
   title: Todo API
@@ -6,8 +31,58 @@ info:
 paths:
   /:
     get:
-      description: check if server is running
+      description: Check if server is running
       produces:
       - application/json
       responses: {}
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Log in using email and password. Returns a raw JWT token string.
+      parameters:
+      - description: Login credentials
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: JWT access token
+          schema:
+            type: string
+        "400":
+          description: Invalid login data or wrong credentials
+          schema:
+            $ref: '#/definitions/middleware.ApiError'
+        "500":
+          description: Internal failure during token generation
+          schema:
+            $ref: '#/definitions/middleware.ApiError'
+      summary: Login
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user account with email and password
+      parameters:
+      - description: Registration payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/database.CreateAccountParams'
+      responses:
+        "200":
+          description: Created account ID
+          schema:
+            type: string
+      summary: Create a new account
+      tags:
+      - auth
 swagger: "2.0"

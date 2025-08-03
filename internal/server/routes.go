@@ -3,23 +3,26 @@ package server
 import (
 	"net/http"
 
-	"github.com/akagiyuu/todo-backend/internal/handler"
-	"github.com/akagiyuu/todo-backend/internal/middleware"
 	"github.com/gin-gonic/gin"
 
 	_ "github.com/akagiyuu/todo-backend/docs"
+	"github.com/akagiyuu/todo-backend/internal/server/auth"
+	"github.com/akagiyuu/todo-backend/internal/server/middleware"
+	"github.com/akagiyuu/todo-backend/internal/server/ping"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
-	r := gin.Default()
+	g := gin.Default()
 
-	r.Use(middleware.Cors())
+	g.Use(middleware.Cors())
+	g.Use(middleware.ErrorHandler())
 
-	r.GET("/", handler.Ping)
+	ping.RegisterRoutes(g)
+	auth.RegisterRoutes(g)
 
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	return r
+	return g
 }
