@@ -9,13 +9,13 @@ import (
 )
 
 type AuthRoutes struct {
-	db  *pgxpool.Pool
+	db         *pgxpool.Pool
 	jwtService *jwt.JwtService
 }
 
 func RegisterRoutes(g *gin.Engine) {
 	r := AuthRoutes{
-		db:  database.NewPool(),
+		db:         database.NewPool(),
 		jwtService: jwt.New(),
 	}
 
