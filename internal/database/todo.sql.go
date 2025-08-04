@@ -67,3 +67,64 @@ func (q *Queries) GetTodo(ctx context.Context, arg GetTodoParams) (GetTodoRow, e
 	)
 	return i, err
 }
+
+const getTodos = `-- name: GetTodos :many
+SELECT id, title, content, priority, is_done, created_at
+FROM todos
+WHERE account_id = $1 AND
+    (
+        $2 IS NULL OR
+        title LIKE '%' || $2 || '%' OR
+        content LIKE '%' || $2 || '%'
+    ) AND
+    ($3 IS NULL OR priority = $3) AND
+    ($4 IS NULL OR is_done = $4)
+`
+
+type GetTodosParams struct {
+	AccountID pgtype.UUID
+	Query     interface{}
+	Priority  interface{}
+	IsDone    interface{}
+}
+
+type GetTodosRow struct {
+	ID        pgtype.UUID
+	Title     string
+	Content   string
+	Priority  Priority
+	IsDone    bool
+	CreatedAt pgtype.Timestamptz
+}
+
+func (q *Queries) GetTodos(ctx context.Context, arg GetTodosParams) ([]GetTodosRow, error) {
+	rows, err := q.db.Query(ctx, getTodos,
+		arg.AccountID,
+		arg.Query,
+		arg.Priority,
+		arg.IsDone,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetTodosRow
+	for rows.Next() {
+		var i GetTodosRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Content,
+			&i.Priority,
+			&i.IsDone,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
