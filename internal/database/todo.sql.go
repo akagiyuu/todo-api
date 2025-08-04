@@ -36,6 +36,21 @@ func (q *Queries) CreateTodo(ctx context.Context, arg CreateTodoParams) (pgtype.
 	return id, err
 }
 
+const deleteTodo = `-- name: DeleteTodo :exec
+DELETE FROM todos
+WHERE id = $1 AND account_id = $2
+`
+
+type DeleteTodoParams struct {
+	ID        pgtype.UUID
+	AccountID pgtype.UUID
+}
+
+func (q *Queries) DeleteTodo(ctx context.Context, arg DeleteTodoParams) error {
+	_, err := q.db.Exec(ctx, deleteTodo, arg.ID, arg.AccountID)
+	return err
+}
+
 const getTodo = `-- name: GetTodo :one
 SELECT title, content, priority, is_done, created_at
 FROM todos

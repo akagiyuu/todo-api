@@ -27,3 +27,7 @@ SET
     content = COALESCE(@content, content),
     priority = COALESCE(@priority, priority)
 WHERE id = @id AND account_id = @account_id AND is_done = true;
+
+-- name: DeleteTodo :exec
+DELETE FROM todos
+WHERE id = @id AND account_id = @account_id;
