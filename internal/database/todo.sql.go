@@ -128,3 +128,31 @@ func (q *Queries) GetTodos(ctx context.Context, arg GetTodosParams) ([]GetTodosR
 	}
 	return items, nil
 }
+
+const updateTodo = `-- name: UpdateTodo :exec
+UPDATE todos
+SET
+    title = COALESCE($1, title),
+    content = COALESCE($2, content),
+    priority = COALESCE($3, priority)
+WHERE id = $4 AND account_id = $5 AND is_done = true
+`
+
+type UpdateTodoParams struct {
+	Title     string
+	Content   string
+	Priority  Priority
+	ID        pgtype.UUID
+	AccountID pgtype.UUID
+}
+
+func (q *Queries) UpdateTodo(ctx context.Context, arg UpdateTodoParams) error {
+	_, err := q.db.Exec(ctx, updateTodo,
+		arg.Title,
+		arg.Content,
+		arg.Priority,
+		arg.ID,
+		arg.AccountID,
+	)
+	return err
+}

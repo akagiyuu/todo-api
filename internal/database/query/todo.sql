@@ -19,3 +19,11 @@ WHERE account_id = @account_id AND
     ) AND
     (@priority IS NULL OR priority = @priority) AND
     (@is_done IS NULL OR is_done = @is_done);
+
+-- name: UpdateTodo :exec
+UPDATE todos
+SET
+    title = COALESCE(@title, title),
+    content = COALESCE(@content, content),
+    priority = COALESCE(@priority, priority)
+WHERE id = @id AND account_id = @account_id AND is_done = true;
