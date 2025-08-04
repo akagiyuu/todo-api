@@ -35,3 +35,37 @@ func (q *Queries) CreateTodo(ctx context.Context, arg CreateTodoParams) (pgtype.
 	err := row.Scan(&id)
 	return id, err
 }
+
+const getTodo = `-- name: GetTodo :one
+SELECT id, title, content, priority, is_done, created_at
+FROM todos
+WHERE id = $1 AND account_id = $2
+`
+
+type GetTodoParams struct {
+	ID        pgtype.UUID
+	AccountID pgtype.UUID
+}
+
+type GetTodoRow struct {
+	ID        pgtype.UUID
+	Title     string
+	Content   string
+	Priority  Priority
+	IsDone    bool
+	CreatedAt pgtype.Timestamptz
+}
+
+func (q *Queries) GetTodo(ctx context.Context, arg GetTodoParams) (GetTodoRow, error) {
+	row := q.db.QueryRow(ctx, getTodo, arg.ID, arg.AccountID)
+	var i GetTodoRow
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.Content,
+		&i.Priority,
+		&i.IsDone,
+		&i.CreatedAt,
+	)
+	return i, err
+}
