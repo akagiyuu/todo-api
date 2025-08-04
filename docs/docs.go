@@ -100,6 +100,37 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/todo": {
+            "post": {
+                "description": "Create a new todo",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Create a new todo",
+                "parameters": [
+                    {
+                        "description": "Todo data",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/database.CreateTodoParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -125,6 +156,36 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "database.CreateTodoParams": {
+            "type": "object",
+            "properties": {
+                "accountID": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "priority": {
+                    "$ref": "#/definitions/database.Priority"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "database.Priority": {
+            "type": "string",
+            "enum": [
+                "low",
+                "medium",
+                "high"
+            ],
+            "x-enum-varnames": [
+                "PriorityLow",
+                "PriorityMedium",
+                "PriorityHigh"
+            ]
         },
         "middleware.ApiError": {
             "description": "HTTP-level error response wrapper.",

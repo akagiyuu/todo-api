@@ -15,6 +15,27 @@ definitions:
       password:
         type: string
     type: object
+  database.CreateTodoParams:
+    properties:
+      accountID:
+        type: string
+      content:
+        type: string
+      priority:
+        $ref: '#/definitions/database.Priority'
+      title:
+        type: string
+    type: object
+  database.Priority:
+    enum:
+    - low
+    - medium
+    - high
+    type: string
+    x-enum-varnames:
+    - PriorityLow
+    - PriorityMedium
+    - PriorityHigh
   middleware.ApiError:
     description: HTTP-level error response wrapper.
     properties:
@@ -85,4 +106,24 @@ paths:
       summary: Create a new account
       tags:
       - auth
+  /todo:
+    post:
+      consumes:
+      - application/json
+      description: Create a new todo
+      parameters:
+      - description: Todo data
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/database.CreateTodoParams'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Create a new todo
+      tags:
+      - todo
 swagger: "2.0"

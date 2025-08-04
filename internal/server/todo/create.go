@@ -13,7 +13,7 @@ import (
 // @Description  Create a new todo
 // @Tags         todo
 // @Accept       json
-// @Param        payload  body       database.CreateTodoParams  true
+// @Param        payload  body       database.CreateTodoParams  true "Todo data"
 // @Success      200      {string}   string
 // @Router       /todo [post]
 func (r *TodoRoutes) CreateHandler(c *gin.Context) {
