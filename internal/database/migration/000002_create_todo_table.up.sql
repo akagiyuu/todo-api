@@ -1,7 +1,7 @@
 CREATE TYPE priority AS ENUM(
-    "low",
-    "medium",
-    "high"
+    'low',
+    'medium',
+    'high'
 );
 
 CREATE TABLE IF NOT EXISTS todos(
