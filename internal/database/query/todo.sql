@@ -8,7 +8,7 @@ SELECT title, content, priority, is_done, created_at
 FROM todos
 WHERE id = @id AND account_id = @account_id;
 
--- name: GetTodos :many
+-- name: FilterTodo :many
 SELECT id, title, content, priority, is_done, created_at
 FROM todos
 WHERE account_id = @account_id AND
