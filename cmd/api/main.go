@@ -40,6 +40,9 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 // @title           Todo API
 // @version         1.0
 // @BasePath        /
+// @securityDefinitions.apiKey  BearerAuth
+// @in                          header
+// @name                        Authorization
 func main() {
 
 	server := server.NewServer()
