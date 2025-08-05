@@ -8,6 +8,7 @@ import (
 	"database/sql/driver"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -55,14 +56,14 @@ func (ns NullPriority) Value() (driver.Value, error) {
 }
 
 type Account struct {
-	ID       pgtype.UUID
+	ID       uuid.UUID
 	Email    string
 	Password string
 }
 
 type Todo struct {
-	ID        pgtype.UUID
-	AccountID pgtype.UUID
+	ID        uuid.UUID
+	AccountID uuid.UUID
 	Title     string
 	Content   string
 	Priority  Priority

@@ -8,3 +8,14 @@ sql:
         package: "database"
         out: "."
         sql_package: "pgx/v5"
+        overrides:
+          - db_type: "uuid"
+            nullable: false
+            go_type:
+              import: "github.com/google/uuid"
+              type: "UUID"
+          - db_type: "uuid"
+            nullable: true
+            go_type:
+              import: "github.com/google/uuid"
+              type: "UUID"
