@@ -95,6 +95,11 @@
         },
         "/todo": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new todo",
                 "consumes": [
                     "application/json"
@@ -110,7 +115,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/database.CreateTodoParams"
+                            "$ref": "#/definitions/todo.CreateRequest"
                         }
                     }
                 ],
@@ -149,23 +154,6 @@
                 }
             }
         },
-        "database.CreateTodoParams": {
-            "type": "object",
-            "properties": {
-                "accountID": {
-                    "type": "string"
-                },
-                "content": {
-                    "type": "string"
-                },
-                "priority": {
-                    "$ref": "#/definitions/database.Priority"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
         "database.Priority": {
             "type": "string",
             "enum": [
@@ -191,6 +179,28 @@
                     "type": "string"
                 }
             }
+        },
+        "todo.CreateRequest": {
+            "description": "Payload for POST /todo",
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "priority": {
+                    "$ref": "#/definitions/database.Priority"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

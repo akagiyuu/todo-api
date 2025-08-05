@@ -15,17 +15,6 @@ definitions:
       password:
         type: string
     type: object
-  database.CreateTodoParams:
-    properties:
-      accountID:
-        type: string
-      content:
-        type: string
-      priority:
-        $ref: '#/definitions/database.Priority'
-      title:
-        type: string
-    type: object
   database.Priority:
     enum:
     - low
@@ -43,6 +32,16 @@ definitions:
         additionalProperties: {}
         type: object
       message:
+        type: string
+    type: object
+  todo.CreateRequest:
+    description: Payload for POST /todo
+    properties:
+      content:
+        type: string
+      priority:
+        $ref: '#/definitions/database.Priority'
+      title:
         type: string
     type: object
 info:
@@ -117,13 +116,20 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/database.CreateTodoParams'
+          $ref: '#/definitions/todo.CreateRequest'
       responses:
         "200":
           description: OK
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Create a new todo
       tags:
       - todo
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

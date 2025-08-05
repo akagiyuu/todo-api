@@ -103,6 +103,11 @@ const docTemplate = `{
         },
         "/todo": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new todo",
                 "consumes": [
                     "application/json"
@@ -118,7 +123,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/database.CreateTodoParams"
+                            "$ref": "#/definitions/todo.CreateRequest"
                         }
                     }
                 ],
@@ -157,23 +162,6 @@ const docTemplate = `{
                 }
             }
         },
-        "database.CreateTodoParams": {
-            "type": "object",
-            "properties": {
-                "accountID": {
-                    "type": "string"
-                },
-                "content": {
-                    "type": "string"
-                },
-                "priority": {
-                    "$ref": "#/definitions/database.Priority"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
         "database.Priority": {
             "type": "string",
             "enum": [
@@ -199,6 +187,28 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "todo.CreateRequest": {
+            "description": "Payload for POST /todo",
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "priority": {
+                    "$ref": "#/definitions/database.Priority"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
