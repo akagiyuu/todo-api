@@ -5,6 +5,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/akagiyuu/todo-backend/internal/database"
+	"github.com/akagiyuu/todo-backend/internal/server/middleware"
 )
 
 type TodoRoutes struct {
@@ -16,5 +17,8 @@ func RegisterRoutes(g *gin.Engine) {
 		db: database.NewPool(),
 	}
 
-	g.POST("/todo", r.CreateHandler)
+	todo := g.Group("/", middleware.RequireAuthentication())
+	{
+		todo.POST("/todo", r.CreateHandler)
+	}
 }
