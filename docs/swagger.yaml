@@ -127,6 +127,21 @@ paths:
       summary: Create a new todo
       tags:
       - todo
+  /todo/:id:
+    get:
+      consumes:
+      - application/json
+      description: Get todo data by id
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get todo data by id
+      tags:
+      - todo
 securityDefinitions:
   BearerAuth:
     in: header
