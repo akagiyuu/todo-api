@@ -11,7 +11,7 @@ import (
 	"github.com/moznion/go-optional"
 )
 
-// @Description Payload for PATCH /todo/{id} 
+// @Description Payload for PATCH /todo/{id}
 type UpdateRequest struct {
 	Title    optional.Option[string]            `json:"title,omitempty" swaggertype:"string"`
 	Content  optional.Option[string]            `json:"content,omitempty" swaggertype:"string"`
