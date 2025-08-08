@@ -13,12 +13,12 @@ SELECT id, title, content, priority, is_done, created_at
 FROM todos
 WHERE account_id = @account_id AND
     (
-        @query IS NULL OR
+        sqlc.narg('query')::text IS NULL OR
         title LIKE '%' || @query || '%' OR
         content LIKE '%' || @query || '%'
     ) AND
-    (@priority IS NULL OR priority = @priority) AND
-    (@is_done IS NULL OR is_done = @is_done);
+    (sqlc.narg('priority')::priority IS NULL OR priority = @priority) AND
+    (sqlc.narg('is_done')::bool IS NULL OR is_done = @is_done);
 
 -- name: UpdateTodo :exec
 UPDATE todos

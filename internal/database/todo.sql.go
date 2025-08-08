@@ -58,19 +58,19 @@ SELECT id, title, content, priority, is_done, created_at
 FROM todos
 WHERE account_id = $1 AND
     (
-        $2 IS NULL OR
+        $2::text IS NULL OR
         title LIKE '%' || $2 || '%' OR
         content LIKE '%' || $2 || '%'
     ) AND
-    ($3 IS NULL OR priority = $3) AND
-    ($4 IS NULL OR is_done = $4)
+    ($3::priority IS NULL OR priority = $3) AND
+    ($4::bool IS NULL OR is_done = $4)
 `
 
 type FilterTodoParams struct {
-	AccountID uuid.UUID   `json:"accountId"`
-	Query     interface{} `json:"query"`
-	Priority  interface{} `json:"priority"`
-	IsDone    interface{} `json:"isDone"`
+	AccountID uuid.UUID                 `json:"accountId"`
+	Query     optional.Option[string]   `json:"query"`
+	Priority  optional.Option[Priority] `json:"priority"`
+	IsDone    optional.Option[bool]     `json:"isDone"`
 }
 
 type FilterTodoRow struct {

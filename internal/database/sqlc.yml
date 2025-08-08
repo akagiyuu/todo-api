@@ -33,3 +33,9 @@ sql:
               import: "github.com/moznion/go-optional"
               package: "optional"
               type: "Option[Priority]"
+          - db_type: "bool"
+            nullable: true
+            go_type:
+              import: "github.com/moznion/go-optional"
+              package: "optional"
+              type: "Option[bool]"
