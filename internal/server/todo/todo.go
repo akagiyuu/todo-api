@@ -20,5 +20,6 @@ func RegisterRoutes(g *gin.Engine) {
 	todo := g.Group("/", middleware.RequireAuthentication())
 	{
 		todo.POST("/todo", r.CreateHandler)
+		todo.GET("/todo/:id", r.GetHandler)
 	}
 }

@@ -10,13 +10,16 @@ import (
 	"github.com/google/uuid"
 )
 
-// @Summary      Get todo data by id
-// @Description  Get todo data by id
+// @Summary      Get todo data by ID
+// @Description  Retrieves a specific todo by its UUID and validates ownership.
 // @Tags         todo
 // @Security     BearerAuth
 // @Accept       json
-// @Success      200      {string}   string
-// @Router       /todo/:id [get]
+// @Produce      json
+// @Param        id   path     string  true  "Todo UUID (v4)"
+// @Success      200  {object} database.Todo  "Todo data returned"
+// @Failure      400  {object} middleware.ApiError  "Bad request or not found"
+// @Router       /todo/{id} [get]
 func (r *TodoRoutes) GetHandler(c *gin.Context) {
 	ctx := context.Background()
 
