@@ -55,10 +55,14 @@ definitions:
     description: Payload for POST /todo
     properties:
       content:
+        example: Milk, bread, and eggs
         type: string
       priority:
-        $ref: '#/definitions/database.Priority'
+        allOf:
+        - $ref: '#/definitions/database.Priority'
+        example: high
       title:
+        example: Buy groceries
         type: string
     type: object
 info:
@@ -126,7 +130,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create a new todo
+      description: Creates a new todo item for the authenticated user.
       parameters:
       - description: Todo data
         in: body
@@ -134,11 +138,17 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/todo.CreateRequest'
+      produces:
+      - application/json
       responses:
         "200":
-          description: OK
+          description: ID of the created todo
           schema:
             type: string
+        "400":
+          description: Invalid request or duplicate title
+          schema:
+            $ref: '#/definitions/middleware.ApiError'
       security:
       - BearerAuth: []
       summary: Create a new todo

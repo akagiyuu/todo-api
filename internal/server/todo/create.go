@@ -10,20 +10,23 @@ import (
 	"github.com/google/uuid"
 )
 
+// CreateRequest defines the expected payload for creating a new todo.
 // @Description Payload for POST /todo
 type CreateRequest struct {
-	Title    string
-	Content  string
-	Priority database.Priority
+	Title    string            `json:"title" example:"Buy groceries"`
+	Content  string            `json:"content" example:"Milk, bread, and eggs"`
+	Priority database.Priority `json:"priority" example:"high"`
 }
 
 // @Summary      Create a new todo
-// @Description  Create a new todo
+// @Description  Creates a new todo item for the authenticated user.
 // @Tags         todo
 // @Security     BearerAuth
 // @Accept       json
-// @Param        payload  body       CreateRequest  true "Todo data"
-// @Success      200      {string}   string
+// @Produce      json
+// @Param        payload  body       CreateRequest         true  "Todo data"
+// @Success      200      {string}   string                "ID of the created todo"
+// @Failure      400      {object}   middleware.ApiError  "Invalid request or duplicate title"
 // @Router       /todo [post]
 func (r *TodoRoutes) CreateHandler(c *gin.Context) {
 	ctx := context.Background()
@@ -41,9 +44,9 @@ func (r *TodoRoutes) CreateHandler(c *gin.Context) {
 	queries := database.New(r.db)
 	id, err := queries.CreateTodo(ctx, database.CreateTodoParams{
 		AccountID: accountID,
-		Title: request.Title,
-		Content: request.Content,
-		Priority: request.Priority,
+		Title:     request.Title,
+		Content:   request.Content,
+		Priority:  request.Priority,
 	})
 	if err != nil {
 		c.Error(&middleware.ApiError{

@@ -108,8 +108,11 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Create a new todo",
+                "description": "Creates a new todo item for the authenticated user.",
                 "consumes": [
+                    "application/json"
+                ],
+                "produces": [
                     "application/json"
                 ],
                 "tags": [
@@ -129,9 +132,15 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "ID of the created todo",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or duplicate title",
+                        "schema": {
+                            "$ref": "#/definitions/middleware.ApiError"
                         }
                     }
                 }
@@ -262,13 +271,20 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "content": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Milk, bread, and eggs"
                 },
                 "priority": {
-                    "$ref": "#/definitions/database.Priority"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/database.Priority"
+                        }
+                    ],
+                    "example": "high"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Buy groceries"
                 }
             }
         }
