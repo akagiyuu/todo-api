@@ -25,6 +25,23 @@ definitions:
     - PriorityLow
     - PriorityMedium
     - PriorityHigh
+  database.Todo:
+    properties:
+      accountId:
+        type: string
+      content:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: string
+      isDone:
+        type: boolean
+      priority:
+        $ref: '#/definitions/database.Priority'
+      title:
+        type: string
+    type: object
   middleware.ApiError:
     description: HTTP-level error response wrapper.
     properties:
@@ -127,19 +144,31 @@ paths:
       summary: Create a new todo
       tags:
       - todo
-  /todo/:id:
+  /todo/{id}:
     get:
       consumes:
       - application/json
-      description: Get todo data by id
+      description: Retrieves a specific todo by its UUID and validates ownership.
+      parameters:
+      - description: Todo UUID (v4)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
       responses:
         "200":
-          description: OK
+          description: Todo data returned
           schema:
-            type: string
+            $ref: '#/definitions/database.Todo'
+        "400":
+          description: Bad request or not found
+          schema:
+            $ref: '#/definitions/middleware.ApiError'
       security:
       - BearerAuth: []
-      summary: Get todo data by id
+      summary: Get todo data by ID
       tags:
       - todo
 securityDefinitions:

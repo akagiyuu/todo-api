@@ -137,26 +137,44 @@ const docTemplate = `{
                 }
             }
         },
-        "/todo/:id": {
+        "/todo/{id}": {
             "get": {
                 "security": [
                     {
                         "BearerAuth": []
                     }
                 ],
-                "description": "Get todo data by id",
+                "description": "Retrieves a specific todo by its UUID and validates ownership.",
                 "consumes": [
+                    "application/json"
+                ],
+                "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "todo"
                 ],
-                "summary": "Get todo data by id",
+                "summary": "Get todo data by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Todo UUID (v4)",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Todo data returned",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/database.Todo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request or not found",
+                        "schema": {
+                            "$ref": "#/definitions/middleware.ApiError"
                         }
                     }
                 }
@@ -199,6 +217,32 @@ const docTemplate = `{
                 "PriorityMedium",
                 "PriorityHigh"
             ]
+        },
+        "database.Todo": {
+            "type": "object",
+            "properties": {
+                "accountId": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isDone": {
+                    "type": "boolean"
+                },
+                "priority": {
+                    "$ref": "#/definitions/database.Priority"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
         },
         "middleware.ApiError": {
             "description": "HTTP-level error response wrapper.",
