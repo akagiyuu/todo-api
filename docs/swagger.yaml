@@ -127,6 +127,18 @@ paths:
       tags:
       - auth
   /todo:
+    patch:
+      consumes:
+      - application/json
+      description: Update a new todo
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Update a new todo
+      tags:
+      - todo
     post:
       consumes:
       - application/json
