@@ -10,6 +10,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
+	optional "github.com/moznion/go-optional"
 )
 
 const createTodo = `-- name: CreateTodo :one
@@ -155,11 +156,11 @@ WHERE id = $4 AND account_id = $5 AND is_done = false
 `
 
 type UpdateTodoParams struct {
-	Title     pgtype.Text  `json:"title"`
-	Content   pgtype.Text  `json:"content"`
-	Priority  NullPriority `json:"priority"`
-	ID        uuid.UUID    `json:"id"`
-	AccountID uuid.UUID    `json:"accountId"`
+	Title     optional.Option[string]   `json:"title"`
+	Content   optional.Option[string]   `json:"content"`
+	Priority  optional.Option[Priority] `json:"priority"`
+	ID        uuid.UUID                 `json:"id"`
+	AccountID uuid.UUID                 `json:"accountId"`
 }
 
 func (q *Queries) UpdateTodo(ctx context.Context, arg UpdateTodoParams) error {

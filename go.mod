@@ -16,6 +16,8 @@ require (
 	golang.org/x/crypto v0.40.0
 )
 
+require github.com/moznion/go-optional v0.13.0 // indirect
+
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/bytedance/sonic v1.14.0 // indirect
