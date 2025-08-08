@@ -15,6 +15,33 @@ definitions:
       password:
         type: string
     type: object
+  database.Priority:
+    enum:
+    - low
+    - medium
+    - high
+    type: string
+    x-enum-varnames:
+    - PriorityLow
+    - PriorityMedium
+    - PriorityHigh
+  database.Todo:
+    properties:
+      accountId:
+        type: string
+      content:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: string
+      isDone:
+        type: boolean
+      priority:
+        $ref: '#/definitions/database.Priority'
+      title:
+        type: string
+    type: object
   middleware.ApiError:
     description: HTTP-level error response wrapper.
     properties:
@@ -22,6 +49,30 @@ definitions:
         additionalProperties: {}
         type: object
       message:
+        type: string
+    type: object
+  todo.CreateRequest:
+    description: Payload for POST /todo
+    properties:
+      content:
+        example: Milk, bread, and eggs
+        type: string
+      priority:
+        allOf:
+        - $ref: '#/definitions/database.Priority'
+        example: high
+      title:
+        example: Buy groceries
+        type: string
+    type: object
+  todo.UpdateRequest:
+    description: Payload for PATCH /todo/{id}
+    properties:
+      content:
+        type: string
+      priority:
+        type: string
+      title:
         type: string
     type: object
 info:
@@ -85,4 +136,158 @@ paths:
       summary: Create a new account
       tags:
       - auth
+  /todo:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves todos for the authenticated user, filtered by optional
+        query parameters.
+      parameters:
+      - description: Search text
+        in: query
+        name: query
+        type: string
+      - description: Priority filter
+        in: query
+        name: priority
+        type: string
+      - description: Completion status filter
+        in: query
+        name: isDone
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of filtered todos
+          schema:
+            items:
+              $ref: '#/definitions/database.Todo'
+            type: array
+        "400":
+          description: Invalid query parameters
+          schema:
+            $ref: '#/definitions/middleware.ApiError'
+      security:
+      - BearerAuth: []
+      summary: Filter todos
+      tags:
+      - todo
+    post:
+      consumes:
+      - application/json
+      description: Creates a new todo item for the authenticated user.
+      parameters:
+      - description: Todo data
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/todo.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ID of the created todo
+          schema:
+            type: string
+        "400":
+          description: Invalid request or duplicate title
+          schema:
+            $ref: '#/definitions/middleware.ApiError'
+      security:
+      - BearerAuth: []
+      summary: Create a new todo
+      tags:
+      - todo
+  /todo/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a specific todo by its UUID.
+      parameters:
+      - description: Todo UUID v4
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK — todo deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid ID or todo not found
+          schema:
+            $ref: '#/definitions/middleware.ApiError'
+      security:
+      - BearerAuth: []
+      summary: Delete a todo
+      tags:
+      - todo
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a specific todo by its UUID and validates ownership.
+      parameters:
+      - description: Todo UUID (v4)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Todo data returned
+          schema:
+            $ref: '#/definitions/database.Todo'
+        "400":
+          description: Bad request or not found
+          schema:
+            $ref: '#/definitions/middleware.ApiError'
+      security:
+      - BearerAuth: []
+      summary: Get todo data by ID
+      tags:
+      - todo
+    patch:
+      consumes:
+      - application/json
+      description: Partially updates an existing todo; only supplied fields are changed.
+      parameters:
+      - description: Todo UUID v4
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Fields to update (optional)
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/todo.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK — no content returned
+          schema:
+            type: string
+        "400":
+          description: Invalid payload or update error
+          schema:
+            $ref: '#/definitions/middleware.ApiError'
+      security:
+      - BearerAuth: []
+      summary: Update a todo
+      tags:
+      - todo
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

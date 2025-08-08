@@ -8,7 +8,7 @@ package database
 import (
 	"context"
 
-	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/google/uuid"
 )
 
 const createAccount = `-- name: CreateAccount :one
@@ -18,13 +18,13 @@ RETURNING id
 `
 
 type CreateAccountParams struct {
-	Email    string
-	Password string
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
-func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (pgtype.UUID, error) {
+func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (uuid.UUID, error) {
 	row := q.db.QueryRow(ctx, createAccount, arg.Email, arg.Password)
-	var id pgtype.UUID
+	var id uuid.UUID
 	err := row.Scan(&id)
 	return id, err
 }
@@ -36,8 +36,8 @@ WHERE email = $1
 `
 
 type GetAccountByEmailRow struct {
-	ID       pgtype.UUID
-	Password string
+	ID       uuid.UUID `json:"id"`
+	Password string    `json:"password"`
 }
 
 func (q *Queries) GetAccountByEmail(ctx context.Context, email string) (GetAccountByEmailRow, error) {

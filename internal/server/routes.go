@@ -9,6 +9,7 @@ import (
 	"github.com/akagiyuu/todo-backend/internal/server/auth"
 	"github.com/akagiyuu/todo-backend/internal/server/middleware"
 	"github.com/akagiyuu/todo-backend/internal/server/ping"
+	"github.com/akagiyuu/todo-backend/internal/server/todo"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -21,6 +22,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	ping.RegisterRoutes(g)
 	auth.RegisterRoutes(g)
+	todo.RegisterRoutes(g)
 
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 

@@ -8,6 +8,7 @@ import (
 	"database/sql/driver"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -32,8 +33,8 @@ func (e *Priority) Scan(src interface{}) error {
 }
 
 type NullPriority struct {
-	Priority Priority
-	Valid    bool // Valid is true if Priority is not NULL
+	Priority Priority `json:"priority"`
+	Valid    bool     `json:"valid"` // Valid is true if Priority is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -55,17 +56,17 @@ func (ns NullPriority) Value() (driver.Value, error) {
 }
 
 type Account struct {
-	ID       pgtype.UUID
-	Email    string
-	Password string
+	ID       uuid.UUID `json:"id"`
+	Email    string    `json:"email"`
+	Password string    `json:"password"`
 }
 
 type Todo struct {
-	ID        pgtype.UUID
-	AccountID pgtype.UUID
-	Title     string
-	Content   string
-	Priority  Priority
-	IsDone    bool
-	CreatedAt pgtype.Timestamptz
+	ID        uuid.UUID          `json:"id"`
+	AccountID uuid.UUID          `json:"accountId"`
+	Title     string             `json:"title"`
+	Content   string             `json:"content"`
+	Priority  Priority           `json:"priority"`
+	IsDone    bool               `json:"isDone"`
+	CreatedAt pgtype.Timestamptz `json:"createdAt"`
 }

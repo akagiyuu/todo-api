@@ -10,7 +10,7 @@ import (
 
 const (
 	authorization         string = "Authorization"
-	bearer                string = "Bearer: "
+	bearer                string = "Bearer "
 	AuthorizationTokenKey string = "token"
 )
 

@@ -7,6 +7,7 @@ import (
 	"github.com/akagiyuu/todo-backend/internal/config"
 	"github.com/caarlos0/env/v11"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 	_ "github.com/joho/godotenv/autoload"
 )
 
@@ -35,16 +36,26 @@ func (s *JwtService) NewToken(subject string) (string, error) {
 	return tokenString, nil
 }
 
-func (s *JwtService) ParseToken(tokenString string) (*jwt.Token, error) {
+func (s *JwtService) ParseToken(tokenString string) (uuid.UUID, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
 		return s.cfg.Secret, nil
 	})
 	if err != nil {
-		return nil, err
+		return uuid.Nil, err
 	}
 	if !token.Valid {
-		return nil, fmt.Errorf("invalid token")
+		return uuid.Nil, fmt.Errorf("invalid token")
 	}
 
-	return token, nil
+	rawID, err := token.Claims.GetSubject()
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	id, err := uuid.Parse(rawID)
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	return id, nil
 }

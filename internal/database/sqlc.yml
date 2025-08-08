@@ -8,3 +8,34 @@ sql:
         package: "database"
         out: "."
         sql_package: "pgx/v5"
+        emit_json_tags: true
+        json_tags_case_style: camel
+        overrides:
+          - db_type: "uuid"
+            nullable: false
+            go_type:
+              import: "github.com/google/uuid"
+              type: "UUID"
+          - db_type: "uuid"
+            nullable: true
+            go_type:
+              import: "github.com/google/uuid"
+              type: "UUID"
+          - db_type: "text"
+            nullable: true
+            go_type:
+              import: "github.com/moznion/go-optional"
+              package: "optional"
+              type: "Option[string]"
+          - db_type: "priority"
+            nullable: true
+            go_type:
+              import: "github.com/moznion/go-optional"
+              package: "optional"
+              type: "Option[Priority]"
+          - db_type: "bool"
+            nullable: true
+            go_type:
+              import: "github.com/moznion/go-optional"
+              package: "optional"
+              type: "Option[bool]"
