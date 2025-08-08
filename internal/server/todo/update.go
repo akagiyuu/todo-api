@@ -62,7 +62,7 @@ func (r *TodoRoutes) UpdateHandler(c *gin.Context) {
 		c.Error(&middleware.ApiError{
 			Inner:   err,
 			Code:    http.StatusBadRequest,
-			Message: "Todo with given title already existed",
+			Message: "Failed to update todo",
 		})
 		return
 	}

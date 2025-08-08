@@ -165,6 +165,32 @@ paths:
       tags:
       - todo
   /todo/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a specific todo by its UUID.
+      parameters:
+      - description: Todo UUID v4
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK — todo deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid ID or todo not found
+          schema:
+            $ref: '#/definitions/middleware.ApiError'
+      security:
+      - BearerAuth: []
+      summary: Delete a todo
+      tags:
+      - todo
     get:
       consumes:
       - application/json

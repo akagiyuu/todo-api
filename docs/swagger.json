@@ -180,6 +180,47 @@
                     }
                 }
             },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Deletes a specific todo by its UUID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Delete a todo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Todo UUID v4",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK — todo deleted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID or todo not found",
+                        "schema": {
+                            "$ref": "#/definitions/middleware.ApiError"
+                        }
+                    }
+                }
+            },
             "patch": {
                 "security": [
                     {
