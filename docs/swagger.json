@@ -94,6 +94,61 @@
             }
         },
         "/todo": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieves todos for the authenticated user, filtered by optional query parameters.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Filter todos",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search text",
+                        "name": "query",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Priority filter",
+                        "name": "priority",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Completion status filter",
+                        "name": "isDone",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of filtered todos",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/database.Todo"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid query parameters",
+                        "schema": {
+                            "$ref": "#/definitions/middleware.ApiError"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {

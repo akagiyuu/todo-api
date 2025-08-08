@@ -137,6 +137,42 @@ paths:
       tags:
       - auth
   /todo:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves todos for the authenticated user, filtered by optional
+        query parameters.
+      parameters:
+      - description: Search text
+        in: query
+        name: query
+        type: string
+      - description: Priority filter
+        in: query
+        name: priority
+        type: string
+      - description: Completion status filter
+        in: query
+        name: isDone
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of filtered todos
+          schema:
+            items:
+              $ref: '#/definitions/database.Todo'
+            type: array
+        "400":
+          description: Invalid query parameters
+          schema:
+            $ref: '#/definitions/middleware.ApiError'
+      security:
+      - BearerAuth: []
+      summary: Filter todos
+      tags:
+      - todo
     post:
       consumes:
       - application/json
