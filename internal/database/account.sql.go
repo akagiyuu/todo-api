@@ -18,8 +18,8 @@ RETURNING id
 `
 
 type CreateAccountParams struct {
-	Email    string
-	Password string
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (uuid.UUID, error) {
@@ -36,8 +36,8 @@ WHERE email = $1
 `
 
 type GetAccountByEmailRow struct {
-	ID       uuid.UUID
-	Password string
+	ID       uuid.UUID `json:"id"`
+	Password string    `json:"password"`
 }
 
 func (q *Queries) GetAccountByEmail(ctx context.Context, email string) (GetAccountByEmailRow, error) {
