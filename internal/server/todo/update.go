@@ -11,26 +11,39 @@ import (
 	"github.com/moznion/go-optional"
 )
 
+// @Description Payload for PATCH /todo/{id} 
 type UpdateRequest struct {
-	Title    optional.Option[string]
-	Content  optional.Option[string]
-	Priority optional.Option[database.Priority]
+	Title    optional.Option[string]            `json:"title,omitempty" swaggertype:"string"`
+	Content  optional.Option[string]            `json:"content,omitempty" swaggertype:"string"`
+	Priority optional.Option[database.Priority] `json:"priority,omitempty" swaggertype:"string"`
 }
 
-// @Summary      Update a new todo
-// @Description  Update a new todo
+// @Summary      Update a todo
+// @Description  Partially updates an existing todo; only supplied fields are changed.
 // @Tags         todo
 // @Security     BearerAuth
 // @Accept       json
 // @Produce      json
-// @Router       /todo [PATCH]
+// @Param        id       path      string          true  "Todo UUID v4"
+// @Param        payload  body      UpdateRequest   true  "Fields to update (optional)"
+// @Success      200      {string}  string          "OK — no content returned"
+// @Failure      400      {object}  middleware.ApiError  "Invalid payload or update error"
+// @Router       /todo/{id} [patch]
 func (r *TodoRoutes) UpdateHandler(c *gin.Context) {
 	ctx := context.Background()
+
+	id, err := uuid.Parse(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, middleware.ApiError{
+			Message: "Required UUID v4",
+		})
+		return
+	}
 
 	var request UpdateRequest
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, middleware.ApiError{
-			Message: "Invalid new todo data",
+			Message: "Invalid update todo data",
 		})
 		return
 	}
@@ -38,7 +51,8 @@ func (r *TodoRoutes) UpdateHandler(c *gin.Context) {
 	accountID := c.MustGet(middleware.AuthorizationTokenKey).(uuid.UUID)
 
 	queries := database.New(r.db)
-	err := queries.UpdateTodo(ctx, database.UpdateTodoParams{
+	err = queries.UpdateTodo(ctx, database.UpdateTodoParams{
+		ID:        id,
 		AccountID: accountID,
 		Title:     request.Title,
 		Content:   request.Content,

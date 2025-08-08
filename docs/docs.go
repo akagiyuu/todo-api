@@ -144,25 +144,6 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "patch": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Update a new todo",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "todo"
-                ],
-                "summary": "Update a new todo",
-                "responses": {}
             }
         },
         "/todo/{id}": {
@@ -201,6 +182,56 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad request or not found",
+                        "schema": {
+                            "$ref": "#/definitions/middleware.ApiError"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Partially updates an existing todo; only supplied fields are changed.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Update a todo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Todo UUID v4",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Fields to update (optional)",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/todo.UpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK — no content returned",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid payload or update error",
                         "schema": {
                             "$ref": "#/definitions/middleware.ApiError"
                         }
@@ -304,6 +335,21 @@ const docTemplate = `{
                 "title": {
                     "type": "string",
                     "example": "Buy groceries"
+                }
+            }
+        },
+        "todo.UpdateRequest": {
+            "description": "Payload for PATCH /todo/{id}",
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "priority": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
                 }
             }
         }

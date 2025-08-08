@@ -65,6 +65,16 @@ definitions:
         example: Buy groceries
         type: string
     type: object
+  todo.UpdateRequest:
+    description: Payload for PATCH /todo/{id}
+    properties:
+      content:
+        type: string
+      priority:
+        type: string
+      title:
+        type: string
+    type: object
 info:
   contact: {}
   title: Todo API
@@ -127,18 +137,6 @@ paths:
       tags:
       - auth
   /todo:
-    patch:
-      consumes:
-      - application/json
-      description: Update a new todo
-      produces:
-      - application/json
-      responses: {}
-      security:
-      - BearerAuth: []
-      summary: Update a new todo
-      tags:
-      - todo
     post:
       consumes:
       - application/json
@@ -191,6 +189,38 @@ paths:
       security:
       - BearerAuth: []
       summary: Get todo data by ID
+      tags:
+      - todo
+    patch:
+      consumes:
+      - application/json
+      description: Partially updates an existing todo; only supplied fields are changed.
+      parameters:
+      - description: Todo UUID v4
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Fields to update (optional)
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/todo.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK — no content returned
+          schema:
+            type: string
+        "400":
+          description: Invalid payload or update error
+          schema:
+            $ref: '#/definitions/middleware.ApiError'
+      security:
+      - BearerAuth: []
+      summary: Update a todo
       tags:
       - todo
 securityDefinitions:
