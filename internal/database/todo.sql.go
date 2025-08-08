@@ -151,7 +151,7 @@ SET
     title = COALESCE($1, title),
     content = COALESCE($2, content),
     priority = COALESCE($3, priority)
-WHERE id = $4 AND account_id = $5 AND is_done = true
+WHERE id = $4 AND account_id = $5 AND is_done = false
 `
 
 type UpdateTodoParams struct {
