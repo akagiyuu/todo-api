@@ -41,6 +41,15 @@ func NewServer() *fuego.Server {
 				},
 			}),
 		),
+		fuego.WithSecurity(openapi3.SecuritySchemes{
+			"bearerAuth": &openapi3.SecuritySchemeRef{
+				Value: openapi3.NewSecurityScheme().
+					WithType("http").
+					WithScheme("bearer").
+					WithBearerFormat("JWT").
+					WithDescription("Enter your JWT token in the format: Bearer <token>"),
+			},
+		}),
 	)
 	s.Engine.OutputOpenAPISpec().AddServer(&openapi3.Server{
 		URL: cfg.Url,
