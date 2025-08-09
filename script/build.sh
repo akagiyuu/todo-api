@@ -2,5 +2,5 @@
 
 OUTPUT="${1:-main}"
 
-sqlc generate -f internal/database/sqlc.yml
+sqlc generate
 go build -o $OUTPUT cmd/api/main.go
