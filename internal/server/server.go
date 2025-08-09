@@ -2,35 +2,23 @@ package server
 
 import (
 	"fmt"
-	"net/http"
-	"time"
 
 	"github.com/caarlos0/env/v11"
-	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/go-fuego/fuego"
 	_ "github.com/joho/godotenv/autoload"
 
 	"github.com/akagiyuu/todo-backend/internal/config"
-	"github.com/akagiyuu/todo-backend/internal/database"
 )
 
-type Server struct {
-	db *pgxpool.Pool
-}
-
-func NewServer() *http.Server {
+func NewServer() *fuego.Server {
 	cfg, _ := env.ParseAs[config.ServerConfig]()
-
-	NewServer := &Server{
-		db: database.NewPool(),
+	options := []fuego.ServerOption{
+		fuego.WithAddr(fmt.Sprintf(":%d", cfg.Port)),
+		fuego.WithGlobalMiddlewares()
 	}
 
-	server := &http.Server{
-		Addr:         fmt.Sprintf(":%d", cfg.Port),
-		Handler:      NewServer.RegisterRoutes(),
-		IdleTimeout:  time.Minute,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 30 * time.Second,
-	}
+	app := fuego.NewServer(options...)
+	app.OpenAPI.Description().Info.Title = "Todo API"
 
-	return server
+	return app
 }

@@ -10,9 +10,10 @@ import (
 	"time"
 
 	"github.com/akagiyuu/todo-backend/internal/server"
+	"github.com/go-fuego/fuego"
 )
 
-func gracefulShutdown(apiServer *http.Server, done chan bool) {
+func gracefulShutdown(apiServer *fuego.Server, done chan bool) {
 	// Create context that listens for the interrupt signal from the OS.
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
@@ -43,8 +44,8 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 // @securityDefinitions.apiKey  BearerAuth
 // @in                          header
 // @name                        Authorization
+// @description                 JWT access token in format “Bearer {token}”
 func main() {
-
 	server := server.NewServer()
 
 	// Create a done channel to signal when the shutdown is complete
