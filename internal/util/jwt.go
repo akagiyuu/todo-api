@@ -1,4 +1,4 @@
-package jwt
+package util
 
 import (
 	"fmt"
@@ -11,24 +11,24 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
-type JwtService struct {
+type JwtUtil struct {
 	cfg config.JwtConfig
 }
 
-func New() *JwtService {
+func NewJwtUtil() *JwtUtil {
 	cfg, _ := env.ParseAs[config.JwtConfig]()
 
-	return &JwtService{cfg}
+	return &JwtUtil{cfg}
 }
 
-func (s *JwtService) NewToken(subject string) (string, error) {
+func (u *JwtUtil) NewToken(subject string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": subject,
-		"exp": time.Now().Add(time.Duration(s.cfg.ExpiredIn) * time.Hour).Unix(),
+		"exp": time.Now().Add(time.Duration(u.cfg.ExpiredIn) * time.Hour).Unix(),
 		"iat": time.Now().Unix(),
 	})
 
-	tokenString, err := token.SignedString(s.cfg.Secret)
+	tokenString, err := token.SignedString(u.cfg.Secret)
 	if err != nil {
 		return "", err
 	}
@@ -36,9 +36,9 @@ func (s *JwtService) NewToken(subject string) (string, error) {
 	return tokenString, nil
 }
 
-func (s *JwtService) ParseToken(tokenString string) (uuid.UUID, error) {
+func (u *JwtUtil) ParseToken(tokenString string) (uuid.UUID, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
-		return s.cfg.Secret, nil
+		return u.cfg.Secret, nil
 	})
 	if err != nil {
 		return uuid.Nil, err
