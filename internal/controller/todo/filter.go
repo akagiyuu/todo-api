@@ -18,7 +18,7 @@ type FilterQuery struct {
 	IsDone   optional.Option[bool]              `form:"isDone"`
 }
 
-func (rs TodoResource) Filter(c fuego.ContextNoBody) (*[]database.FilterTodoRow, error) {
+func (rs TodoResource) Filter(c fuego.ContextNoBody) ([]database.FilterTodoRow, error) {
 	accountID := c.Value(middleware.AuthorizationTokenKey).(uuid.UUID)
 
 	var filter FilterQuery
@@ -47,5 +47,5 @@ func (rs TodoResource) Filter(c fuego.ContextNoBody) (*[]database.FilterTodoRow,
 		}
 	}
 
-	return &todos, nil
+	return todos, nil
 }
