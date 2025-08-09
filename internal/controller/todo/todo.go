@@ -4,6 +4,7 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/go-fuego/fuego"
 	"github.com/go-fuego/fuego/option"
+	"github.com/go-fuego/fuego/param"
 	"github.com/gorilla/schema"
 	"github.com/jackc/pgx/v5/pgxpool"
 
@@ -28,7 +29,11 @@ func RegisterRoutes(s *fuego.Server) {
 	)
 
 	fuego.Post(group, "/", rs.Create)
-	fuego.Get(group, "/", rs.Filter)
+	fuego.Get(group, "/", rs.Filter,
+		option.Query("query", "Title or content of todo", param.Nullable()),
+		option.Query("priority", "Priority of todo", param.Nullable()),
+		option.QueryBool("isDone", "Status of todo", param.Nullable()),
+	)
 	fuego.Get(group, "/{id}", rs.Get)
 	fuego.Patch(group, "/{id}", rs.Update)
 	fuego.Delete(group, "/{id}", rs.Delete)
