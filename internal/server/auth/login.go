@@ -54,6 +54,7 @@ func (r *AuthRoutes) LoginHandler(c *gin.Context) {
 			Code:    http.StatusBadRequest,
 			Message: "Wrong email or password",
 		})
+		return
 	}
 
 	tokenString, err := r.jwtService.NewToken(account.ID.String())
