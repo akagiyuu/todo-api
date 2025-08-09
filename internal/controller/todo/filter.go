@@ -46,6 +46,9 @@ func (rs TodoResource) Filter(c fuego.ContextNoBody) ([]database.FilterTodoRow, 
 			Message: "Failed to query todo with given params",
 		}
 	}
+	if todos == nil {
+		todos = make([]database.FilterTodoRow, 0)
+	}
 
 	return todos, nil
 }
