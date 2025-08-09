@@ -13,6 +13,7 @@ import (
 	"github.com/akagiyuu/todo-backend/internal/config"
 	"github.com/akagiyuu/todo-backend/internal/controller/auth"
 	"github.com/akagiyuu/todo-backend/internal/controller/ping"
+	"github.com/akagiyuu/todo-backend/internal/controller/todo"
 	"github.com/akagiyuu/todo-backend/internal/middleware"
 )
 
@@ -57,6 +58,7 @@ func NewServer() *fuego.Server {
 
 	ping.RegisterRoutes(s)
 	auth.RegisterRoutes(s)
+	todo.RegisterRoutes(s)
 
 	return s
 }
