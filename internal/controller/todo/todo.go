@@ -1,6 +1,7 @@
 package todo
 
 import (
+	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/go-fuego/fuego"
 	"github.com/go-fuego/fuego/option"
 	"github.com/gorilla/schema"
@@ -21,7 +22,10 @@ func RegisterRoutes(s *fuego.Server) {
 		decoder: schema.NewDecoder(),
 	}
 
-	group := fuego.Group(s, "/todo", option.Middleware(middleware.RequireAuthentication))
+	group := fuego.Group(s, "/todo",
+		option.Middleware(middleware.RequireAuthentication),
+		option.Security(openapi3.SecurityRequirement{"bearerAuth": []string{}}),
+	)
 
 	fuego.Post(group, "/", rs.Create)
 	fuego.Get(group, "/", rs.Filter)
