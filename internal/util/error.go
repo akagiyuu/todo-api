@@ -7,7 +7,7 @@ type ApiError struct {
 	Details map[string]any `json:"details,omitempty"`
 }
 
-func (e ApiError) Error() string { return e.Message }
+func (e ApiError) Error() string { return e.Inner.Error() }
 
 func (e ApiError) StatusCode() int { return e.Code }
 
