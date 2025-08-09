@@ -8,13 +8,13 @@ import (
 	"github.com/akagiyuu/todo-backend/internal/util"
 )
 
-type authResource struct {
+type AuthResource struct {
 	db         *pgxpool.Pool
 	jwtService *util.JwtUtil
 }
 
 func RegisterRoutes(s *fuego.Server) {
-	rs := authResource{
+	rs := AuthResource{
 		db:         database.NewPool(),
 		jwtService: util.NewJwtUtil(),
 	}

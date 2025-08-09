@@ -15,7 +15,7 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
-func (rs authResource) Login(c fuego.ContextWithBody[LoginRequest]) (string, error) {
+func (rs AuthResource) Login(c fuego.ContextWithBody[LoginRequest]) (string, error) {
 	request, err := c.Body()
 	if err != nil {
 		return "", util.ApiError{

@@ -10,7 +10,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (rs authResource) Register(c fuego.ContextWithBody[database.CreateAccountParams]) (string, error) {
+func (rs AuthResource) Register(c fuego.ContextWithBody[database.CreateAccountParams]) (string, error) {
 	request, err := c.Body()
 	if err != nil {
 		return "", util.ApiError{

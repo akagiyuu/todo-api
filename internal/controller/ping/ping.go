@@ -5,15 +5,15 @@ import (
 )
 
 func RegisterRoutes(s *fuego.Server) {
-	fuego.Get(s, "/", ping)
+	fuego.Get(s, "/", Ping)
 }
 
-type pingResponse struct {
+type PingResponse struct {
 	Message string `json:"message"`
 }
 
-func ping(c fuego.ContextNoBody) (pingResponse, error) {
-	return pingResponse{
+func Ping(c fuego.ContextNoBody) (PingResponse, error) {
+	return PingResponse{
 		Message: "pong",
 	}, nil
 }
