@@ -1,6 +1,8 @@
 module github.com/akagiyuu/todo-backend
 
-go 1.24.3
+go 1.24.4
+
+toolchain go1.24.6
 
 require (
 	github.com/caarlos0/env/v11 v11.3.1
@@ -13,10 +15,22 @@ require (
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.6
-	golang.org/x/crypto v0.40.0
+	golang.org/x/crypto v0.41.0
 )
 
-require github.com/moznion/go-optional v0.13.0 // indirect
+require (
+	github.com/getkin/kin-openapi v0.132.0 // indirect
+	github.com/go-fuego/fuego v0.18.9-0.20250807024229-a42f8ffe3588 // indirect
+	github.com/gorilla/schema v1.4.1 // indirect
+	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
+	github.com/moznion/go-optional v0.13.0 // indirect
+	github.com/oasdiff/yaml v0.0.0-20250309154309-f31be36b4037 // indirect
+	github.com/oasdiff/yaml3 v0.0.0-20250309153720-d2182401db90 // indirect
+	github.com/perimeterx/marshmallow v1.1.5 // indirect
+	github.com/swaggo/files/v2 v2.0.2 // indirect
+	github.com/swaggo/http-swagger v1.3.4 // indirect
+	github.com/swaggo/http-swagger/v2 v2.0.2 // indirect
+)
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
@@ -50,12 +64,12 @@ require (
 	github.com/ugorji/go/codec v1.3.0 // indirect
 	github.com/vgarvardt/pgx-google-uuid/v5 v5.6.0
 	golang.org/x/arch v0.19.0 // indirect
-	golang.org/x/mod v0.26.0 // indirect
-	golang.org/x/net v0.42.0 // indirect
+	golang.org/x/mod v0.27.0 // indirect
+	golang.org/x/net v0.43.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
-	golang.org/x/sys v0.34.0 // indirect
-	golang.org/x/text v0.27.0 // indirect
-	golang.org/x/tools v0.35.0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/text v0.28.0 // indirect
+	golang.org/x/tools v0.36.0 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

@@ -1,11 +1,12 @@
 package middleware
 
 import (
+	"context"
 	"net/http"
 	"strings"
 
-	"github.com/akagiyuu/todo-backend/internal/service/jwt"
-	"github.com/gin-gonic/gin"
+	"github.com/akagiyuu/todo-backend/internal/util"
+	"github.com/go-fuego/fuego"
 )
 
 const (
@@ -14,13 +15,13 @@ const (
 	AuthorizationTokenKey string = "token"
 )
 
-func RequireAuthentication() gin.HandlerFunc {
-	jwtService := jwt.New()
+func RequireAuthentication(next http.Handler) http.Handler {
+	jwtUtil := util.NewJwtUtil()
 
-	return func(c *gin.Context) {
-		authHeader := c.GetHeader(authorization)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authHeader := r.Header.Get(authorization)
 		if authHeader == "" {
-			c.Error(&ApiError{
+			fuego.SendJSONError(w, nil, util.ApiError{
 				Code:    http.StatusUnauthorized,
 				Message: "Missing authorization header",
 			})
@@ -29,16 +30,16 @@ func RequireAuthentication() gin.HandlerFunc {
 
 		tokenString, isBearer := strings.CutPrefix(authHeader, bearer)
 		if !isBearer {
-			c.Error(&ApiError{
+			fuego.SendJSONError(w, nil, util.ApiError{
 				Code:    http.StatusUnauthorized,
 				Message: "Missing authorization token",
 			})
 			return
 		}
 
-		token, err := jwtService.ParseToken(tokenString)
+		token, err := jwtUtil.ParseToken(tokenString)
 		if err != nil {
-			c.Error(&ApiError{
+			fuego.SendJSONError(w, nil, util.ApiError{
 				Inner:   err,
 				Code:    http.StatusForbidden,
 				Message: "Invalid authorization token",
@@ -46,6 +47,7 @@ func RequireAuthentication() gin.HandlerFunc {
 			return
 		}
 
-		c.Set(AuthorizationTokenKey, token)
-	}
+		ctx := context.WithValue(r.Context(), AuthorizationTokenKey, token)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
 }
