@@ -2,11 +2,9 @@ package todo
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/akagiyuu/todo-backend/internal/database"
 	"github.com/akagiyuu/todo-backend/internal/middleware"
-	"github.com/akagiyuu/todo-backend/internal/util"
 	"github.com/go-fuego/fuego"
 	"github.com/google/uuid"
 	"github.com/moznion/go-optional"
@@ -23,19 +21,17 @@ func (rs TodoResource) Update(c fuego.ContextWithBody[UpdateRequest]) (any, erro
 
 	id, err := uuid.Parse(c.PathParam("id"))
 	if err != nil {
-		return nil, util.ApiError{
-			Inner:   err,
-			Code:    http.StatusBadRequest,
-			Message: "Required UUID v4",
+		return nil, fuego.BadRequestError{
+			Err:    err,
+			Detail: "Required UUID v4",
 		}
 	}
 
 	request, err := c.Body()
 	if err != nil {
-		return nil, util.ApiError{
-			Inner:   err,
-			Code:    http.StatusBadRequest,
-			Message: "Invalid update todo data",
+		return nil, fuego.BadRequestError{
+			Err:    err,
+			Detail: "Invalid update todo data",
 		}
 	}
 
@@ -49,10 +45,9 @@ func (rs TodoResource) Update(c fuego.ContextWithBody[UpdateRequest]) (any, erro
 		Priority:  request.Priority,
 	})
 	if err != nil {
-		return nil, util.ApiError{
-			Inner:   err,
-			Code:    http.StatusBadRequest,
-			Message: "Failed to update todo",
+		return nil, fuego.BadRequestError{
+			Err:    err,
+			Detail: "Failed to update todo",
 		}
 	}
 
