@@ -2,10 +2,8 @@ package auth
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/akagiyuu/todo-backend/internal/database"
-	"github.com/akagiyuu/todo-backend/internal/util"
 	"github.com/go-fuego/fuego"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -13,19 +11,17 @@ import (
 func (rs AuthResource) Register(c fuego.ContextWithBody[database.CreateAccountParams]) (string, error) {
 	request, err := c.Body()
 	if err != nil {
-		return "", util.ApiError{
-			Inner:   err,
-			Code:    http.StatusBadRequest,
-			Message: "Invalid login data",
+		return "", fuego.BadRequestError{
+			Err:    err,
+			Detail: "Invalid register data",
 		}
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return "", util.ApiError{
-			Inner:   err,
-			Code:    http.StatusBadRequest,
-			Message: "Invalid register data",
+		return "", fuego.BadRequestError{
+			Err:    err,
+			Detail: "Invalid register data",
 		}
 	}
 	request.Password = string(hashedPassword)
@@ -34,19 +30,17 @@ func (rs AuthResource) Register(c fuego.ContextWithBody[database.CreateAccountPa
 	ctx := context.Background()
 	id, err := queries.CreateAccount(ctx, request)
 	if err != nil {
-		return "", util.ApiError{
-			Inner:   err,
-			Code:    http.StatusBadRequest,
-			Message: "Account with given email already existed",
+		return "", fuego.BadRequestError{
+			Err:    err,
+			Detail: "Account with given email already existed",
 		}
 	}
 
 	tokenString, err := rs.jwtService.NewToken(id.String())
 	if err != nil {
-		return "", util.ApiError{
-			Inner:   err,
-			Code:    http.StatusInternalServerError,
-			Message: "Failed to generate token",
+		return "", fuego.InternalServerError{
+			Err:    err,
+			Detail: "Failed to generate token",
 		}
 	}
 

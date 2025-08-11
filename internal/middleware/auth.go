@@ -21,28 +21,25 @@ func RequireAuthentication(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get(authorization)
 		if authHeader == "" {
-			fuego.SendJSONError(w, nil, util.ApiError{
-				Code:    http.StatusUnauthorized,
-				Message: "Missing authorization header",
+			fuego.SendJSONError(w, nil, fuego.UnauthorizedError{
+				Detail: "Missing authorization header",
 			})
 			return
 		}
 
 		tokenString, isBearer := strings.CutPrefix(authHeader, bearer)
 		if !isBearer {
-			fuego.SendJSONError(w, nil, util.ApiError{
-				Code:    http.StatusUnauthorized,
-				Message: "Missing authorization token",
+			fuego.SendJSONError(w, nil, fuego.UnauthorizedError{
+				Detail: "Missing authorization token",
 			})
 			return
 		}
 
 		token, err := jwtUtil.ParseToken(tokenString)
 		if err != nil {
-			fuego.SendJSONError(w, nil, util.ApiError{
-				Inner:   err,
-				Code:    http.StatusForbidden,
-				Message: "Invalid authorization token",
+			fuego.SendJSONError(w, nil, fuego.UnauthorizedError{
+				Err:    err,
+				Detail: "Invalid authorization token",
 			})
 			return
 		}

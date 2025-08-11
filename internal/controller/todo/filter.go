@@ -2,11 +2,9 @@ package todo
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/akagiyuu/todo-backend/internal/database"
 	"github.com/akagiyuu/todo-backend/internal/middleware"
-	"github.com/akagiyuu/todo-backend/internal/util"
 	"github.com/go-fuego/fuego"
 	"github.com/google/uuid"
 	"github.com/moznion/go-optional"
@@ -24,10 +22,9 @@ func (rs TodoResource) Filter(c fuego.ContextNoBody) ([]database.FilterTodoRow, 
 	var filter FilterQuery
 	err := rs.decoder.Decode(&filter, c.QueryParams())
 	if err != nil {
-		return nil, util.ApiError{
-			Inner:   err,
-			Code:    http.StatusBadRequest,
-			Message: "Invalid query params",
+		return nil, fuego.BadRequestError{
+			Err:    err,
+			Detail: "Invalid query params",
 		}
 	}
 
@@ -40,10 +37,9 @@ func (rs TodoResource) Filter(c fuego.ContextNoBody) ([]database.FilterTodoRow, 
 		IsDone:    filter.IsDone,
 	})
 	if err != nil {
-		return nil, util.ApiError{
-			Inner:   err,
-			Code:    http.StatusBadRequest,
-			Message: "Failed to query todo with given params",
+		return nil, fuego.BadRequestError{
+			Err:    err,
+			Detail: "Failed to query todo with given params",
 		}
 	}
 	if todos == nil {

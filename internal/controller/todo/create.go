@@ -2,11 +2,9 @@ package todo
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/akagiyuu/todo-backend/internal/database"
 	"github.com/akagiyuu/todo-backend/internal/middleware"
-	"github.com/akagiyuu/todo-backend/internal/util"
 	"github.com/go-fuego/fuego"
 	"github.com/google/uuid"
 )
@@ -22,10 +20,9 @@ func (rs TodoResource) Create(c fuego.ContextWithBody[CreateRequest]) (string, e
 
 	request, err := c.Body()
 	if err != nil {
-		return "", util.ApiError{
-			Inner:   err,
-			Code:    http.StatusBadRequest,
-			Message: "Invalid new todo data",
+		return "", fuego.BadRequestError{
+			Err:    err,
+			Detail: "Invalid new todo data",
 		}
 	}
 
@@ -38,10 +35,9 @@ func (rs TodoResource) Create(c fuego.ContextWithBody[CreateRequest]) (string, e
 		Priority:  request.Priority,
 	})
 	if err != nil {
-		return "", util.ApiError{
-			Inner:   err,
-			Code:    http.StatusBadRequest,
-			Message: "Todo with given title already existed",
+		return "", fuego.BadRequestError{
+			Err:    err,
+			Detail: "Todo with given title already existed",
 		}
 	}
 
